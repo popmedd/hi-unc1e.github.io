@@ -1,5 +1,17 @@
 {
   "name": "hexo-site",
+  "yuqueConfig": {
+    "postPath": "source/_posts/yuque",
+    "cachePath": "yuque.json",
+    "mdNameFormat": "title",
+    "adapter": "hexo",
+    "concurrency": 5,
+    "baseUrl": "https://www.yuque.com/api/v2",
+    "login": "henry-weply",
+    "repo": "blog",
+    "onlyPublished": false,
+    "onlyPublic": true
+  },
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -13,13 +25,17 @@
   },
   "dependencies": {
     "hexo": "^4.2.1",
+    "hexo-deployer-git": "^2.1.0",
     "hexo-generator-archive": "^1.0.0",
     "hexo-generator-category": "^1.0.0",
     "hexo-generator-index": "^1.0.0",
     "hexo-generator-tag": "^1.0.0",
     "hexo-renderer-ejs": "^1.0.0",
-    "hexo-renderer-stylus": "^1.1.0",
     "hexo-renderer-marked": "^2.0.0",
+    "hexo-renderer-stylus": "^1.1.0",
     "hexo-server": "^1.0.0"
+  },
+  "devDependencies": {
+    "yuque-hexo": "^1.6.5"
   }
 }
