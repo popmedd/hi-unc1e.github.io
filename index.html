@@ -299,8 +299,7 @@
       
         
           
-            <h1 id="PHP代码审计之利用回溯绕过正则表达式"><a href="#PHP代码审计之利用回溯绕过正则表达式" class="headerlink" title="PHP代码审计之利用回溯绕过正则表达式"></a>PHP代码审计之利用回溯绕过正则表达式</h1><p>PHP代码审计的经验和技巧，各位前辈在wiki上已经总结很多了，例如: 涧山大哥的<a href="https://wiki.qianxin-inc.cn/pages/viewpage.action?pageId=201871713" target="_blank" rel="noopener">PHP代码审计思路小结</a>，提出了从上往下看“安全函数是否有效”和 从下往上“追踪危险函数调用“的两种审计思路，给我很大的启发;  苏宝童的<a href="https://wiki.qianxin-inc.cn/pages/viewpage.action?pageId=231210713" target="_blank" rel="noopener">PHP代码审计总结</a>中，列举的许多cms的审计实例，也是让人直呼内行。随着PHP代码审计的机会增加，越来越要求对PHP的语言特性有更多的了解，因此补充一些审计时用得上的tricks就显得尤为重要。因此有了本系列，也是我学习的简单记录。</p>
-<p>第一篇：利用回溯绕过PHP中的正则表达式</p>
+            <h1 id="PHP代码审计之利用回溯绕过正则表达式"><a href="#PHP代码审计之利用回溯绕过正则表达式" class="headerlink" title="PHP代码审计之利用回溯绕过正则表达式"></a>PHP代码审计之利用回溯绕过正则表达式</h1><p>第一篇：利用回溯绕过PHP中的正则表达式</p>
 <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>首先，来看一段在waf上很常见的正则，</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">'/SELECT.+FROM.+/is'</span>, $_POST[<span class="string">'sql'</span>]))&#123;</span><br><span class="line">		<span class="keyword">die</span>(<span class="string">"SQL injection"</span>) <span class="comment">//WAF</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  	<span class="keyword">echo</span>($_POST[<span class="string">'sql'</span>]);</span><br><span class="line">		<span class="comment">//mysql_query($db,  $_POST['sql']); //查询</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
