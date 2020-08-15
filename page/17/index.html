@@ -228,7 +228,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/01/10/yuque/NexusPHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/01/12/yuque/BlueCMS%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Unc1e">
@@ -247,7 +247,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/01/10/yuque/NexusPHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/" itemprop="url">NexusPHP代码审计小结</a></h1>
+                <a class="post-title-link" href="/2020/01/12/yuque/BlueCMS%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/" itemprop="url">BlueCMS代码审计小结</a></h1>
         
 
         <div class="post-meta">
@@ -259,8 +259,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-10T17:28:56+08:00">
-                2020-01-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-12T10:02:24+08:00">
+                2020-01-12
               </time>
             
 
@@ -299,28 +299,27 @@
       
         
           
-            <h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这套 cms，存在全局过滤 sql 注入的函数</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578665090979-a178b3e4-c646-472a-bb10-fd5e69a0fc12.png#align=left&display=inline&height=159&name=image.png&originHeight=318&originWidth=1286&size=81714&status=done&style=none&width=643" alt="image.png"></p>
-<p>用 mysql 防注入函数转义，并且用单引号包裹住语句，导致无法注入引号，也无法引入变量（单引号中的$不会被识别成变量）<br>并且常常有整型转换<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578664936920-1a5f4e5e-16d5-4b7e-a645-bc08cc176ec2.png#align=left&display=inline&height=44&name=image.png&originHeight=88&originWidth=1168&size=38960&status=done&style=none&width=584" alt="image.png"></p>
-<h1 id="0x01-iconv-的截断"><a href="#0x01-iconv-的截断" class="headerlink" title="0x01 iconv 的截断"></a>0x01 iconv 的截断</h1><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578665878342-7e973113-92e5-4271-9233-65e3c209d036.png#align=left&display=inline&height=273&name=image.png&originHeight=546&originWidth=1226&size=140625&status=done&style=none&width=613" alt="image.png"></p>
-<p>我们看下 php 官方的文档，关于 iconv 这个函数，官方是怎么说的</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578666013310-5df9fe05-e9c6-40d4-ab71-035c75c8d1f7.png#align=left&display=inline&height=432&name=image.png&originHeight=864&originWidth=1394&size=191228&status=done&style=none&width=697" alt="image.png"></p>
-<p>在 PHP &lt; 5.4.0，字符非法时会被截断，只返回非法字符串之前能正常解码的内容<br>在 PHP &gt;= 5.4.0 时，字符非法时会报错返回 False，除非输出字符串里拼接了//IGNORE，本套 cms 就是这种情况</p>
-<p>也就是说，我们可以控制输出，利用特性 bypass 文件后缀之类的检测</p>
-<h1 id="0x02-nowarn-php-存在-sql-注入"><a href="#0x02-nowarn-php-存在-sql-注入" class="headerlink" title="0x02 nowarn.php 存在 sql 注入"></a>0x02 nowarn.php 存在 sql 注入</h1><blockquote>
-<p>需要登录且不为普通用户</p>
+            <h1 id="0x01-可重复安装"><a href="#0x01-可重复安装" class="headerlink" title="0x01 可重复安装"></a>0x01 可重复安装</h1><p>正常安装完成后，存在可重复安装的问题，因为 install.lock 未能生成.<br>freebuf 有篇文章说，问题出在 insall/index.php 的 158 行，错误地使用了 is_writable 函数。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795057671-7c251453-b762-4cc1-90e1-3db6d081431c.png#align=left&display=inline&height=327&name=image.png&originHeight=653&originWidth=1231&size=193643&status=done&style=none&width=615.5" alt="image.png"><br>可是经过验证，发现并不是由这个函数导致的可重复安装问题</p>
+<p>首先，找一下 php 官方手册<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795842491-0701f3a2-2657-4afd-9729-c9f683e09062.png#align=left&display=inline&height=374&name=image.png&originHeight=748&originWidth=1344&size=132042&status=done&style=none&width=672" alt="image.png"></p>
+<p>在代码里试着把布尔值 dump 出来看，是 true！看来并不是 158 行的判断出错了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795365792-fd05ba46-70ae-4322-ab07-9239b1b5661d.png#align=left&display=inline&height=88&name=image.png&originHeight=175&originWidth=744&size=27594&status=done&style=none&width=372" alt="image.png"></p>
+<p>之所以没有生成 install.lock, 不是因为 include 了两次, 也不是相同的变量 define 了两次<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578799654577-bc165bb0-f57a-4964-9f3a-da68c4dbd15f.png#align=left&display=inline&height=399&name=image.png&originHeight=799&originWidth=668&size=57370&status=done&style=none&width=334" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578799338686-5f3cbbb3-5043-4372-84ee-bc0e762c95f1.png#align=left&display=inline&height=51&name=image.png&originHeight=101&originWidth=1009&size=16966&status=done&style=none&width=504.5" alt="image.png"><br>本地测试 include 两次,可正常运行</p>
+<p>而是因为<strong>没有处理异常</strong>, 而没有捕获处理的异常就是致命错误, 在 156 行便停止运行, 所以就没有走到 160 行以后的写 install.lock 的逻辑<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578802013716-ffd7a1af-e171-481b-a71c-cc52e580dca9.png#align=left&display=inline&height=197&name=image.png&originHeight=393&originWidth=1038&size=72901&status=done&style=none&width=519" alt="image.png"><br>除此之外, 由于编码被设置成了 gbk, 导致全局都存在 gbk 宽字节注入的问题</p>
+<h1 id="0x02-全局存在-gbk-宽字节注入"><a href="#0x02-全局存在-gbk-宽字节注入" class="headerlink" title="0x02  全局存在 gbk 宽字节注入"></a>0x02  全局存在 gbk 宽字节注入</h1><p><code>admin\include\common.inc.php:26处,</code>对用户入参进行了统一的 addslash 处理.<img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578796696140-34e5062e-2567-4259-9c21-3ce12ddc939d.png#align=left&display=inline&height=57&name=image.png&originHeight=113&originWidth=1416&size=23644&status=done&style=none&width=708" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578796867724-299c55bd-9535-4aad-bd1c-7032cc31bcd9.png#align=left&display=inline&height=222&name=image.png&originHeight=443&originWidth=1342&size=173854&status=done&style=none&width=671" alt="image.png"><br>在 install/index.php，缺少过滤，直接使转义符号\被吞掉, 导致注入<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578795788870-eda47cfd-0596-45a2-9305-78ac892d36ac.png#align=left&display=inline&height=141&name=image.png&originHeight=282&originWidth=1394&size=169872&status=done&style=none&width=697" alt="image.png"></p>
+<h1 id="0x03-安装处拿-shell"><a href="#0x03-安装处拿-shell" class="headerlink" title="0x03 安装处拿 shell"></a>0x03 安装处拿 shell</h1><p>利用<code>**%df + &quot;/&quot; =&gt; &quot;運&quot;**</code> ，吃掉’转义用的’&#39;, 直接注入了恶意内容, 需要注意的是<code>%df</code>里面的百分号会被 url 编码成<code>%25</code>，需要在 burp 里改回为% . 否则不能注入恶意代码，如图<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578801721901-bac41452-c13b-43c1-a536-0fab0c5f2918.png#align=left&display=inline&height=298&name=image.png&originHeight=596&originWidth=1028&size=111234&status=done&style=none&width=514" alt="image.png"></p>
+<h1 id="0x04-多处-xss"><a href="#0x04-多处-xss" class="headerlink" title="0x04 多处 xss"></a>0x04 多处 xss</h1><p>个人资料中 MSN：QQ：办公电话：家庭电话：手机：地址的参数都是经过 html 实体转义的, 不存在 xss 问题<br>可是, 在”用户管理&gt;&gt;我的个人资料”处, 存在将用户输入直接写进页面的操作,导致首页等能看到用户头像的地方都存在 xss<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580783981422-7f0fa2e9-faf5-4fed-b04b-8d391fcedf4a.png#align=left&display=inline&height=521&name=image.png&originHeight=1042&originWidth=1322&size=299783&status=done&style=none&width=661" alt="image.png"></p>
+<h1 id="0x05-uccode-class-php-命令执行"><a href="#0x05-uccode-class-php-命令执行" class="headerlink" title="0x05 uccode.class.php 命令执行"></a>0x05 uccode.class.php 命令执行</h1><p>首先介绍一下 php 正则匹配中的后向引用，一般用<code>${1}, ${2}</code>或者<code>\\1, \\2</code>来表示，如下面图中的两种使用方式</p>
+<blockquote>
+<p>后向引用是在 preg_replace($pattern, $replacement, $subject)中，将$pattern 中的原子参数（<code>Capturing Group</code>）重新组合的一种实现。</p>
 </blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578664268612-5386c2e7-7661-4dbe-8d8b-6aecd5064ef1.png#align=left&display=inline&height=461&name=image.png&originHeight=922&originWidth=1777&size=303610&status=done&style=none&width=888.5" alt="image.png"><br>nowarn.php 的第 36 行开始，直接拼接进 sql 语句了</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># payload 仅供参考</span></span><br><span class="line"></span><br><span class="line">(select\*from(select sleep(10))x)#</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1580787139061-9230eef6-4ed6-482f-9a22-5f954c129554.png#align=left&display=inline&height=255&name=image.png&originHeight=509&originWidth=1420&size=136249&status=done&style=none&width=710" alt="image.png"><br>例如上面 35 行那里，<code>\\1</code>代表<code>(=((https?|ftp|gopher|news|telnet|rtsp|mms|callto|bctp|ed2k|thunder|synacast){1}:\/\/|www\.)([^\[\&quot;&#39;]+?))?</code>， <code>\\5</code></p>
+<p>而这里的问题在于使用了<code>preg_replace /e</code>的模式, 稍加搜索就能发现, 这种模式可能导致命令执行, 即 php 会把$replacement 当成 php 代码执行 , 所以这里就是我们的代码注入点.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">complie</span><span class="params">($message)</span> </span>&#123;</span><br><span class="line">  $message = htmlspecialchars($message);</span><br><span class="line">  <span class="keyword">if</span>(strpos($message, <span class="string">'[/code]'</span>) !== <span class="keyword">FALSE</span>) &#123;</span><br><span class="line">  $message = preg_replace(<span class="string">"/\s*\[code\](.+?)\[\/code\]\s*/ies"</span>, <span class="string">"\$this-&gt;codedisp('\\1')"</span>, $message);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(strpos($message, <span class="string">'[/url]'</span>) !== <span class="keyword">FALSE</span>) &#123;</span><br><span class="line">  $message = preg_replace(<span class="string">"/\[url(=((https?|ftp|gopher|news|telnet|rtsp|mms|callto|bctp|ed2k|thunder|synacast)&#123;1&#125;:\/\/|www\.)([^\[\"']+?))?\](.+?)\[\/url\]/ies"</span>, <span class="string">"\$this-&gt;parseurl('\\1', '\\5')"</span>, $message);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(strpos($message, <span class="string">'[/email]'</span>) !== <span class="keyword">FALSE</span>) &#123;</span><br><span class="line">  $message = preg_replace(<span class="string">"/\[email(=([a-z0-9\-_.+]+)@([a-z0-9\-_]+[.][a-z0-9\-_.]+))?\](.+?)\[\/email\]/ies"</span>, <span class="string">"\$this-&gt;parseemail('\\1', '\\4')"</span>, $message);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="0x03-反序列化"><a href="#0x03-反序列化" class="headerlink" title="0x03 反序列化"></a>0x03 反序列化</h1><p>全局搜索 unserialize，跟进结果，发现可控点被 sqlesc 给过滤了，md 我单双引号怎么说嘛。。。<br>最骚的是全局搜索 class 和 public function 根本没有结果，呵呵哒，一个功能类的没有，我真是醉了。<br>ref：<a href="https://shavchen.github.io/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" target="_blank" rel="noopener">https://shavchen.github.io/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/</a><br><a href="https://www.anquanke.com/post/id/86452" target="_blank" rel="noopener">https://www.anquanke.com/post/id/86452</a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>这套 cms 审下来，有好很多地方都是形如<strong>0x02 的注入</strong>一样的拼接，但都需要高权限才能访问到漏洞代码处，进而注入，价值不大</li>
-<li>一个 php 的类读没有，参数绝大部分都来强制类型转换，没有常见的命令执行函数</li>
-<li>preg_match 带/e 的模式，可控参数有类型限制，无果</li>
-<li>可以参考这几个老哥的<a href="https://www.cvedetails.com/product/39021/?q=nexusphp" target="_blank" rel="noopener">cve</a>和<a href="http://www.cnnvd.org.cn/web/vulnerability/querylist.tag?relLdKey=2017100498" target="_blank" rel="noopener">cnnvd</a>，17 年的时候刷了一波大规模的洞，主要是 xss 和 sql 注入，个人觉得索然无味</li>
-<li>这次审计也只发现了 nowarn.php 中没有报送的一个参数，不过需要高权限账号，没有多大利用意义就是了</li>
-</ol>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>还有几个地方比较有趣，但是不足以串联起来利用，此处汇总起来，供各位参考</p>
+<h1 id="PHP-弱类型"><a href="#PHP-弱类型" class="headerlink" title="PHP 弱类型"></a>PHP 弱类型</h1><p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578805270942-f55720c5-a3bc-453a-88d1-f2003e8b2aec.png#align=left&display=inline&height=118&name=image.png&originHeight=235&originWidth=1117&size=67348&status=done&style=none&width=558.5" alt="image.png"></p>
+<p>除去不符合代码规范的部分（双目运算符左右要有 1 个空格的嘛），这里还错误地使用了不严格比较的<code>==</code>运算符，在两边取值都特殊的情况下，也能通过判断。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1578841430009-118fda11-0697-4b0b-8b66-6b08d32065b3.png#align=left&display=inline&height=990&originHeight=990&originWidth=1708&size=0&status=done&style=none&width=1708" alt=""></p>
 
           
         
@@ -360,7 +359,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/18/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/16/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/18/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 
@@ -406,7 +405,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

